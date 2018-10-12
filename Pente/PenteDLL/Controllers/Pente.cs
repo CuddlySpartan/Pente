@@ -8,10 +8,26 @@ namespace Pente.Controllers
 {
     class Pente
     {
-        public void RestartGame()
+        
+        enum Color
         {
+            EMPTY,
+            BLACK,
+            WHITE
+        }
+
+        struct PenteBoard
+        {
+            public Color[,] Board { get; set; }
+        }
+
+        public void StartGame()
+        {
+            PenteBoard pente = new PenteBoard();
+            pente.Board = new Color[19, 19];
 
         }
+
 
         public void Tessera()
         {
