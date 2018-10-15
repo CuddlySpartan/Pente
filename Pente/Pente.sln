@@ -5,7 +5,11 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PenteDLL", "PenteDLL\PenteDLL.csproj", "{16FD08DC-53E4-4894-830D-3646FDF0624C}"
 EndProject
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pente", "Pente\Pente.csproj", "{FFBC948D-0203-4D74-929D-4C5451E43D9C}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PenteDLLTest", "PenteDLLTest\PenteDLLTest.csproj", "{8BB04AB0-E9B1-46FB-A307-72C5C81B68DE}"
+>>>>>>> 7d5d8fdeee61ea5808036230073b8ed1d20e365c
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +21,17 @@ Global
 		{16FD08DC-53E4-4894-830D-3646FDF0624C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16FD08DC-53E4-4894-830D-3646FDF0624C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16FD08DC-53E4-4894-830D-3646FDF0624C}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{FFBC948D-0203-4D74-929D-4C5451E43D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FFBC948D-0203-4D74-929D-4C5451E43D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFBC948D-0203-4D74-929D-4C5451E43D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFBC948D-0203-4D74-929D-4C5451E43D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{8BB04AB0-E9B1-46FB-A307-72C5C81B68DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BB04AB0-E9B1-46FB-A307-72C5C81B68DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BB04AB0-E9B1-46FB-A307-72C5C81B68DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BB04AB0-E9B1-46FB-A307-72C5C81B68DE}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> 7d5d8fdeee61ea5808036230073b8ed1d20e365c
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
