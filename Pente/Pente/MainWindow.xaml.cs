@@ -25,7 +25,12 @@ namespace Pente
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            GameWindow gameWindow = new GameWindow();
+            gameWindow.Show();
 
-
+            this.Close();
+        }
     }
 }

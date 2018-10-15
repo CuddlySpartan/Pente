@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Pente.Controllers
+namespace PenteDLL.Controllers
 {
-    class Pente
+    public class PenteLibrary
     {
-        
         enum Color
         {
             EMPTY,
@@ -28,7 +27,6 @@ namespace Pente.Controllers
 
         }
 
-
         public void Tessera()
         {
 
@@ -38,5 +36,6 @@ namespace Pente.Controllers
         {
 
         }
+
     }
 }
