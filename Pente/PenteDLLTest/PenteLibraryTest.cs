@@ -55,5 +55,25 @@ namespace PenteDLLTest
 
             Assert.Inconclusive();
         }
+        [TestMethod]
+        public void WhiteWinPente()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteWinCapture()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void BlackWinPente()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void BlackWinCapture()
+        {
+            Assert.Inconclusive();
+        }
     }
 }
