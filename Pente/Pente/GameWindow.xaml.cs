@@ -20,37 +20,117 @@ namespace Pente
     /// </summary>
     public partial class GameWindow : Window
     {
+        Brush player1 = Brushes.White;
+        Brush player2 = Brushes.Black;
+        Brush EmptySpace = Brushes.Red;
+        Brush gridLines = Brushes.Black;
         public GameWindow()
         {
             InitializeComponent();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            PenteLibrary pL = new PenteLibrary();
-            pL.StartGame();
-
+            for (int i = 0; i < 19*19; i++)
+            {
+                Grid grid = new Grid();
+                grid.Background = Brushes.LightYellow;
+                Rectangle horizontal = new Rectangle();
+                horizontal.Height = 2;
+                horizontal.Fill = gridLines;
+                Rectangle vertical = new Rectangle();
+                vertical.Width = 2;
+                vertical.Fill = gridLines;
+                grid.Children.Add(horizontal);
+                grid.Children.Add(vertical);
+                Background.Children.Add(grid);
+            }
             GameGrid.Rows = 19;
             GameGrid.Columns = 19;
+        }
+
+        public GameWindow(int size)
+        {
+            InitializeComponent();
+            for (int i = 0; i < size*size; i++)
+            {
+                Rectangle rect = new Rectangle();
+                rect.Stroke = Brushes.Black;
+                Background.Children.Add(rect);
+            }
+            GameGrid.Rows = size;
+            GameGrid.Columns = size;
+        }
+        PenteLibrary pL = new PenteLibrary();
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            pL.StartGame();
+
 
             for (int i = 0; i < 19; i++)
             {
                 for (int j = 0; j < 19; j++)
                 {
-                    Rectangle rect = new Rectangle();
-                    if (j % 2 == 0 && i % 2 == 0)
+                    Ellipse ellipse = new Ellipse();
+                    ellipse.Fill = EmptySpace;
+                    ellipse.Opacity = 0.0;
+                    ellipse.MouseLeftButtonDown += MouseLeftClick_Down;
+                    GameGrid.Children.Add(ellipse);
+                }
+            }
+        }
+
+        public void HookUpBoards()
+        {
+            Ellipse[,] boardUpdater = new Ellipse[GameGrid.Columns, GameGrid.Rows];
+            for (int i = 0; i < GameGrid.Rows; i++)
+            {
+                for (int j = 0; j < GameGrid.Columns; j++)
+                {
+                    boardUpdater[i, j] =(Ellipse) GameGrid.Children[(i*GameGrid.Rows) + j];
+                }
+            }
+
+            for (int i = 0; i < boardUpdater.GetLength(0); i++)
+            {
+                for (int j = 0; j < boardUpdater.GetLength(1); j++)
+                {
+                    if(boardUpdater[i,j].Fill.Equals(player2))
                     {
-                        
+                        pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER2;
                     }
-                    rect.MouseLeftButtonDown += MouseLeftClick_Down;
-                    GameGrid.Children.Add(rect);
+                    else if(boardUpdater[i, j].Fill.Equals(player1))
+                    {
+                        pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER1;
+                    }
+                    else
+                    {
+                        pL.Board[i, j] = PenteLibrary.PlayerPiece.EMPTY;
+                    }
                 }
             }
         }
 
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
-            Rectangle rectangle = (Rectangle)sender;
+            Ellipse ellipse = (Ellipse)sender;
+            if (ellipse.Opacity == 0)
+            {
+                if (pL.isPlayer2Turn)
+                {
+                    ellipse.Fill = player2;
+                    ellipse.Opacity = 100;
+                    pL.TurnOver();
+                }
+                else
+                {
+                    ellipse.Fill = player1;
+                    ellipse.Opacity = 100;
+                    pL.TurnOver();
+                }
+                pL.FiveInARow();
+            }
+            else
+            {
+                
+            }
+            HookUpBoards();
         }
     }
 }

@@ -7,11 +7,10 @@
         mc:Ignorable="d"
         Title="GameWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/images/Grid.gif"/>
-        </Grid.Background>
-        <UniformGrid Name="GameGrid">
-
+        <UniformGrid Name="Background">
         </UniformGrid>
+        <Grid>
+            <UniformGrid Name="GameGrid"/>
+        </Grid>
     </Grid>
 </Window>
