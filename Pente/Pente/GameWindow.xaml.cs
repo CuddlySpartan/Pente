@@ -63,9 +63,9 @@ namespace Pente
             pL.StartGame();
 
 
-            for (int i = 0; i < 19; i++)
+            for (int i = 0; i < GameGrid.Rows; i++)
             {
-                for (int j = 0; j < 19; j++)
+                for (int j = 0; j < GameGrid.Rows; j++)
                 {
                     Ellipse ellipse = new Ellipse();
                     ellipse.Fill = EmptySpace;
