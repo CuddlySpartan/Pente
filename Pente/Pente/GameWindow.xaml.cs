@@ -27,7 +27,7 @@ namespace Pente
         public GameWindow()
         {
             InitializeComponent();
-            for (int i = 0; i < 19*19; i++)
+            for (int i = 0; i < 19 * 19; i++)
             {
                 Grid grid = new Grid();
                 grid.Background = Brushes.LightYellow;
@@ -48,7 +48,7 @@ namespace Pente
         public GameWindow(int size)
         {
             InitializeComponent();
-            for (int i = 0; i < size*size; i++)
+            for (int i = 0; i < size * size; i++)
             {
                 Rectangle rect = new Rectangle();
                 rect.Stroke = Brushes.Black;
@@ -83,7 +83,7 @@ namespace Pente
             {
                 for (int j = 0; j < GameGrid.Columns; j++)
                 {
-                    boardUpdater[i, j] =(Ellipse) GameGrid.Children[(i*GameGrid.Rows) + j];
+                    boardUpdater[i, j] = (Ellipse)GameGrid.Children[(i * GameGrid.Rows) + j];
                 }
             }
 
@@ -91,11 +91,11 @@ namespace Pente
             {
                 for (int j = 0; j < boardUpdater.GetLength(1); j++)
                 {
-                    if(boardUpdater[i,j].Fill.Equals(player2))
+                    if (boardUpdater[i, j].Fill.Equals(player2))
                     {
                         pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER2;
                     }
-                    else if(boardUpdater[i, j].Fill.Equals(player1))
+                    else if (boardUpdater[i, j].Fill.Equals(player1))
                     {
                         pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER1;
                     }
@@ -105,6 +105,26 @@ namespace Pente
                     }
                 }
             }
+        }
+
+        private int[] FindPiece(object piece)
+        {
+            int[] locations = new int[2];
+
+            for (int i = 0; i < GameGrid.Rows; i++)
+            {
+                for (int j = 0; j < GameGrid.Columns; j++)
+                {
+                    if (piece.Equals(GameGrid.Children[i + j * GameGrid.Rows]))
+                    {
+                        locations[0] = i;
+                        locations[1] = j;
+                    }
+                }
+            }
+
+
+            return locations;
         }
 
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
@@ -124,13 +144,32 @@ namespace Pente
                     ellipse.Opacity = 100;
                     pL.TurnOver();
                 }
-                pL.FiveInARow();
+                HookUpBoards();
+                int[] pieceLocation = FindPiece(ellipse);
+                int[] captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
+                if(captureLocation[0] < GameGrid.Rows + 1)
+                {
+                    Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[0] + captureLocation[1] * GameGrid.Rows)];
+                    ellipse1.Opacity = 0;
+                    ellipse1.Fill = EmptySpace;
+                }
+                HookUpBoards();
+                if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
+                {
+                    if(pL.isPlayer2Turn)
+                    {
+                        MessageBox.Show("Player 1 wins");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Player 2 wins");
+                    }
+                }
             }
             else
             {
-                
+
             }
-            HookUpBoards();
         }
     }
 }
