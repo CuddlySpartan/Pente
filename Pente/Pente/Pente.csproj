@@ -114,9 +114,14 @@
       <Name>PenteDLL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\Grid.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Wood.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\edit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
