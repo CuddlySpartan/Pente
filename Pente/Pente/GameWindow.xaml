@@ -6,11 +6,29 @@
         xmlns:local="clr-namespace:Pente"
         mc:Ignorable="d"
         Title="GameWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-        <UniformGrid Name="Background">
+    <Grid Background="#420DAB">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="111*"/>
+            <RowDefinition Height="213*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="650*"/>
+            <ColumnDefinition Width="103*"/>
+            <ColumnDefinition Width="41*"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="images/edit.png" MouseLeftButtonUp="Player1NameEdit_Click" Grid.Column="2" Grid.Row="0"/>
+        <Image Source="images/edit.png" MouseLeftButtonUp="Player2NameEdit_Click" Grid.Column="2" Grid.Row="1"/>
+        <Label Name="lblPlayer1Name" Content="{Binding ElementName=tbxPlayer1Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
+        <Label Name="lblPlayer2Name" Content="{Binding ElementName=tbxPlayer2Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
+        <TextBox Name="tbxPlayer1Name" Text="Player1" Background="Transparent" LostFocus="Player1Name_LostFocus" KeyDown="Player1Name_KeyDown" Visibility="Hidden" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="20" />
+        <TextBox Name="tbxPlayer2Name" Text="Player2" Background="Transparent" LostFocus="Player2Name_LostFocus" KeyDown="Player2Name_KeyDown" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Foreground="White" FontSize="20" />
+        <UniformGrid Name="Background" Grid.Column="0" Margin="0,0,0.333,-0.333" Grid.RowSpan="4">
         </UniformGrid>
-        <Grid>
-            <UniformGrid Name="GameGrid"/>
+        <Grid Margin="0,0,17.333,-0.333" Grid.Column="0" Grid.RowSpan="4">
+            <UniformGrid Name="GameGrid" Grid.Column="0"/>
         </Grid>
+        <Ellipse Name="turnIndicator" Fill="White" Grid.Row="2" Grid.Column="1" Stroke="Black" Width="auto" Height="auto"/>
     </Grid>
 </Window>

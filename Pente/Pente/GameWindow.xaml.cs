@@ -20,6 +20,10 @@ namespace Pente
     /// </summary>
     public partial class GameWindow : Window
     {
+        bool player1FirstTurn = true;
+        bool player1SecondTurn = false;
+        int[] lastLocation;
+        int tournamentSpaces = 2;
         Brush player1 = Brushes.White;
         Brush player2 = Brushes.Black;
         Brush EmptySpace = Brushes.Red;
@@ -30,7 +34,7 @@ namespace Pente
             for (int i = 0; i < 19 * 19; i++)
             {
                 Grid grid = new Grid();
-                grid.Background = Brushes.LightYellow;
+                grid.Background = new ImageBrush(new BitmapImage(new Uri("pack://application:,,,/Images/Wood.jpg")));
                 Rectangle horizontal = new Rectangle();
                 horizontal.Height = 2;
                 horizontal.Fill = gridLines;
@@ -129,47 +133,232 @@ namespace Pente
 
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
-            Ellipse ellipse = (Ellipse)sender;
-            if (ellipse.Opacity == 0)
+            if (!player1SecondTurn)
             {
-                if (pL.isPlayer2Turn)
+                Ellipse ellipse = (Ellipse)sender;
+                if (ellipse.Opacity == 0)
                 {
-                    ellipse.Fill = player2;
-                    ellipse.Opacity = 100;
-                    pL.TurnOver();
-                }
-                else
-                {
-                    ellipse.Fill = player1;
-                    ellipse.Opacity = 100;
-                    pL.TurnOver();
-                }
-                HookUpBoards();
-                int[] pieceLocation = FindPiece(ellipse);
-                int[] captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
-                if(captureLocation[0] < GameGrid.Rows + 1)
-                {
-                    Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[0] + captureLocation[1] * GameGrid.Rows)];
-                    ellipse1.Opacity = 0;
-                    ellipse1.Fill = EmptySpace;
-                }
-                HookUpBoards();
-                if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
-                {
-                    if(pL.isPlayer2Turn)
+                    if (pL.isPlayer1Turn)
                     {
-                        MessageBox.Show("Player 1 wins");
+                        ellipse.Fill = player2;
+                        ellipse.Opacity = 100;
+                        pL.TurnOver();
                     }
                     else
                     {
-                        MessageBox.Show("Player 2 wins");
+                        ellipse.Fill = player1;
+                        ellipse.Opacity = 100;
+                        pL.TurnOver();
+                    }
+                    HookUpBoards();
+                    int[] pieceLocation = FindPiece(ellipse);
+                    if(player1FirstTurn)
+                    lastLocation = pieceLocation;
+                     List<int> captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
+                    if (captureLocation.Count > 0)
+                    {
+                        for (int pieceCount = 0; pieceCount < captureLocation.Count; pieceCount = pieceCount + 2)
+                        {
+                            Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[pieceCount + 1] + captureLocation[pieceCount] * GameGrid.Rows)];
+                            ellipse1.Opacity = 0;
+                            ellipse1.Fill = EmptySpace;
+                        }
+                    }
+                    HookUpBoards();
+                    if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
+                    {
+                        if (pL.isPlayer1Turn)
+                        {
+                            MessageBox.Show("Player 1 wins");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Player 2 wins");
+                        }
+                    }
+                    if(player1FirstTurn && !pL.isPlayer1Turn)
+                    {
+                        player1FirstTurn = false;
+                        player1SecondTurn = true;
                     }
                 }
             }
             else
             {
+                Ellipse ellipse = (Ellipse)sender;
+                int[] newPieceLocation = FindPiece(ellipse);
 
+                if (newPieceLocation[0] > lastLocation[0]+tournamentSpaces || 
+                    (newPieceLocation[0] < lastLocation[0] - tournamentSpaces) || 
+                    (newPieceLocation[1] > lastLocation[1] + tournamentSpaces) || 
+                    (newPieceLocation[1] < lastLocation[1] - tournamentSpaces))
+                {
+                    player1SecondTurn = false;
+                    if (ellipse.Opacity == 0)
+                    {
+                        if (pL.isPlayer1Turn)
+                        {
+                            ellipse.Fill = player2;
+                            ellipse.Opacity = 100;
+                            pL.TurnOver();
+                        }
+                        else
+                        {
+                            ellipse.Fill = player1;
+                            ellipse.Opacity = 100;
+                            pL.TurnOver();
+                        }
+                        HookUpBoards();
+                        List<int> captureLocation = pL.Capture(newPieceLocation[0], newPieceLocation[1]);
+                        if (captureLocation.Count > 0)
+                        {
+                            for (int pieceCount = 0; pieceCount < captureLocation.Count; pieceCount = pieceCount + 2)
+                            {
+                                Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[pieceCount + 1] + captureLocation[pieceCount] * GameGrid.Rows)];
+                                ellipse1.Opacity = 0;
+                                ellipse1.Fill = EmptySpace;
+                            }
+                        }
+                        HookUpBoards();
+                        if (pL.FiveInARow(newPieceLocation[0], newPieceLocation[1]))
+                        {
+                            if (pL.isPlayer1Turn)
+                            {
+                                MessageBox.Show("Player 1 wins");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Player 2 wins");
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(pL.player1Captures >= 5)
+            {
+                MessageBox.Show("Trash p1");
+            }
+            else if (pL.player2Captures >= 5)
+            {
+                MessageBox.Show("Your the best p2");
+            }
+            ChangeEllipseColor();
+        }
+
+        private void ChangeEllipseColor()
+        {
+            if(pL.isPlayer1Turn)
+            {
+                turnIndicator.Fill = player2;
+            }
+            else
+            {
+                turnIndicator.Fill = player1;
             }
         }
+
+        #region NameChanging
+        private void Player1Name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //Checks if textbox is empty
+            if (tbxPlayer1Name.Text.Length != 0)
+            {
+                lblPlayer1Name.Content = tbxPlayer1Name.Text;
+            }
+            else
+            {
+                tbxPlayer1Name.Text = "Player 1";
+            }
+            //Sets player 1 text box invisible and unusable after losing focus
+            tbxPlayer1Name.IsEnabled = false;
+            tbxPlayer1Name.Visibility = Visibility.Hidden;
+            tbxPlayer1Name.Focusable = false;
+            lblPlayer1Name.Visibility = Visibility.Visible;
+        }
+
+        private void Player1Name_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                //Checks if textbox is empty
+                if (tbxPlayer1Name.Text.Length != 0)
+                {
+                    lblPlayer1Name.Content = tbxPlayer1Name.Text;
+                }
+                else
+                {
+                    tbxPlayer1Name.Text = "Player 1";
+                }
+                //Sets player 1 text box invisible and unusable after clicking enter
+                tbxPlayer1Name.IsEnabled = false;
+                tbxPlayer1Name.Visibility = Visibility.Hidden;
+                tbxPlayer1Name.Focusable = true;
+                lblPlayer1Name.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Player2Name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //Checks if textbox is empty
+            if (tbxPlayer2Name.Text.Length != 0)
+            {
+                lblPlayer2Name.Content = tbxPlayer2Name.Text;
+            }
+            else
+            {
+                tbxPlayer2Name.Text = "Player 2";
+            }
+            //Sets player 2 text box invisible and unusable after losing focus
+            tbxPlayer2Name.IsEnabled = false;
+            tbxPlayer2Name.Visibility = Visibility.Hidden;
+            tbxPlayer2Name.Focusable = false;
+            lblPlayer2Name.Visibility = Visibility.Visible;
+        }
+
+        private void Player2Name_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                //Checks if textbox is empty
+                if (tbxPlayer2Name.Text.Length != 0)
+                {
+                    lblPlayer2Name.Content = tbxPlayer2Name.Text;
+                }
+                else
+                {
+                    tbxPlayer2Name.Text = "Player 2";
+                }
+                //Sets player 2 text box invisible and unusable after clicking enter
+                tbxPlayer2Name.IsEnabled = false;
+                tbxPlayer2Name.Visibility = Visibility.Hidden;
+                tbxPlayer2Name.Focusable = false;
+                lblPlayer2Name.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void Player2NameEdit_Click(object sender, MouseButtonEventArgs e)
+        {
+            //When pencil is clicked textbox becomes available 
+            tbxPlayer2Name.IsEnabled = true;
+            tbxPlayer2Name.Visibility = Visibility.Visible;
+            tbxPlayer2Name.Focusable = true;
+            tbxPlayer2Name.Focus();
+            tbxPlayer2Name.Text = "";
+            lblPlayer2Name.Visibility = Visibility.Hidden;
+
+        }
+
+        private void Player1NameEdit_Click(object sender, MouseButtonEventArgs e)
+        {
+            //When pencil is clicked textbox becomes available 
+            tbxPlayer1Name.IsEnabled = true;
+            tbxPlayer1Name.Visibility = Visibility.Visible;
+            tbxPlayer1Name.Focusable = true;
+            tbxPlayer1Name.Focus();
+            tbxPlayer1Name.Text = "";
+            lblPlayer1Name.Visibility = Visibility.Hidden;
+        }
+        #endregion
     }
 }

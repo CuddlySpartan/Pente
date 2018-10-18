@@ -8,14 +8,16 @@ namespace PenteDLL.Controllers
 {
     public class PenteLibrary
     {
+        public bool isPlayer1Turn = false;
+        public PlayerPiece[,] Board { get; set; }
+        public int player1Captures = 0;
+        public int player2Captures = 0;
         public enum PlayerPiece
         {
             EMPTY,
             PLAYER1,
             PLAYER2
         }
-
-        public PlayerPiece[,] Board { get; set; }
 
         public void StartGame()
         {
@@ -32,11 +34,11 @@ namespace PenteDLL.Controllers
 
         }
 
-        public bool isPlayer2Turn = false;
+
 
         public void TurnOver()
         {
-            isPlayer2Turn = !isPlayer2Turn;
+            isPlayer1Turn = !isPlayer1Turn;
         }
 
         public bool FiveInARow(int i, int j)
@@ -106,7 +108,7 @@ namespace PenteDLL.Controllers
 
         public int CheckDownLeft(int row, int column, int a)
         {
-            if ((column - 1) >= 0 && (row + 1) <= Board.GetLength(0) && (Board[row, column] == Board[row + 1, column - 1]))
+            if ((column - 1) >= 0 && (row + 1) < Board.GetLength(0) && (Board[row, column] == Board[row + 1, column - 1]))
             {
                 a = CheckDownLeft(row + 1, column - 1, a + 1);
             }
@@ -116,7 +118,7 @@ namespace PenteDLL.Controllers
 
         public int CheckRight(int row, int column, int a)
         {
-            if ((column + 1) <= Board.GetLength(0) && (Board[row, column] == Board[row, column + 1]))
+            if ((column + 1) < Board.GetLength(0) && (Board[row, column] == Board[row, column + 1]))
             {
                 a = CheckRight(row, column + 1, a + 1);
             }
@@ -125,7 +127,7 @@ namespace PenteDLL.Controllers
 
         public int CheckUpRight(int row, int column, int a)
         {
-            if ((column + 1) <= Board.GetLength(0) && (row - 1) >= 0 && (Board[row, column] == Board[row - 1, column + 1]))
+            if ((column + 1) < Board.GetLength(0) && (row - 1) >= 0 && (Board[row, column] == Board[row - 1, column + 1]))
             {
                 a = CheckUpRight(row - 1, column + 1, a + 1);
             }
@@ -134,7 +136,7 @@ namespace PenteDLL.Controllers
 
         public int CheckDownRight(int row, int column, int a)
         {
-            if ((column + 1) <= Board.GetLength(0) && (row + 1) <= Board.GetLength(0) && (Board[row, column] == Board[row + 1, column + 1]))
+            if ((column + 1) < Board.GetLength(0) && (row + 1) < Board.GetLength(0) && (Board[row, column] == Board[row + 1, column + 1]))
             {
                 a = CheckDownRight(row + 1, column + 1, a + 1);
             }
@@ -142,61 +144,89 @@ namespace PenteDLL.Controllers
         }
         #endregion
 
-        public int[] Capture(int i, int j)
+        public List<int> Capture(int column, int row)
         {
-            bool capture = false;
-            if (CaptureUp(j, i))
+            List<int> spacesCaptured = new List<int>();
+            if (CaptureUp(row, column))
             {
-                capture = true;
+                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(column);
+                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(column);
             }
-            else if (CaptureDown(j, i))
+            if (CaptureDown(row, column))
             {
+                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(column);
+                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(column);
+            }
+            if (CaptureLeft(row, column))
+            {
+                spacesCaptured.Add(row);
+                spacesCaptured.Add(column-1);
+                spacesCaptured.Add(row);
+                spacesCaptured.Add(column-2);
+            }
+            if (CaptureRight(row, column))
+            {
+                spacesCaptured.Add(row);
+                spacesCaptured.Add(column + 1);
+                spacesCaptured.Add(row);
+                spacesCaptured.Add(column+2);
+            }
+            if (CaptureUpLeft(row, column))
+            {
+                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(column - 1);
+                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(column - 2);
 
+            }
+            if (CaptureDownLeft(row, column))
+            {
+                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(column - 1);
+                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(column - 2);
 
             }
-            else if (CaptureLeft(j, i))
+            if (CaptureUpRight(row, column))
             {
+                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(column + 1);
+                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(column + 2);
 
             }
-            else if (CaptureRight(j, i))
+            if (CaptureDownRight(row, column))
             {
-
+                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(column + 1);
+                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(column + 2);
             }
-            else if (CaptureUpLeft(j, i))
+            for(int i =0; i < spacesCaptured.Count; i=i+4)
             {
-
+                if(isPlayer1Turn)
+                {
+                    player1Captures++;
+                }
+                else
+                {
+                    player2Captures++;
+                }
             }
-            else if (CaptureDownLeft(j, i))
-            {
-
-            }
-            else if (CaptureUpRight(j, i))
-            {
-
-            }
-            else if (CaptureDownRight(j, i))
-            {
-
-            }
-
-            if(capture)
-            {
-                int[] boardReturn = { i, j};
-                return boardReturn;
-            }
-            else
-            {
-                int[] boardReturn = { Board.GetLength(0)+1, Board.GetLength(1)};
-                return boardReturn;
-            }
+            return spacesCaptured;
         }
 
-        #region caputuring
+        #region capturing
         public bool CaptureUp(int row, int column)
         {
             if ((row - 3) >= 0 && Board[row - 1, column] != Board[row, column]
                 && Board[row - 2, column] != Board[row, column] && Board[row - 3, column] == Board[row, column])
             {
+                if(Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] != PlayerPiece.EMPTY)
                 return true;
             }
             return false;
@@ -204,10 +234,11 @@ namespace PenteDLL.Controllers
 
         public bool CaptureDown(int row, int column)
         {
-            if ((row + 3) <= Board.GetLength(0) && Board[row + 1, column] != Board[row, column]
+            if ((row + 3) < Board.GetLength(0) && Board[row + 1, column] != Board[row, column]
                 && Board[row + 2, column] != Board[row, column] && Board[row + 3, column] == Board[row, column])
             {
-                return true;
+                if (Board[row + 1, column] != PlayerPiece.EMPTY && Board[row + 2, column] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
@@ -217,17 +248,19 @@ namespace PenteDLL.Controllers
             if ((column - 3) >= 0 && Board[row, column - 1] != Board[row, column]
                 && Board[row, column - 2] != Board[row, column] && Board[row, column - 3] == Board[row, column])
             {
-                return true;
+                if (Board[row, column-1] != PlayerPiece.EMPTY && Board[row, column-2] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
 
         public bool CaptureRight(int row, int column)
         {
-            if ((column + 3) <= Board.GetLength(0) && Board[row, column + 1] != Board[row, column]
+            if ((column + 3) < Board.GetLength(0) && Board[row, column + 1] != Board[row, column]
                 && Board[row, column + 2] != Board[row, column] && Board[row, column + 3] == Board[row, column])
             {
-                return true;
+                if (Board[row, column+1] != PlayerPiece.EMPTY && Board[row, column+1] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
@@ -237,37 +270,41 @@ namespace PenteDLL.Controllers
             if ((row - 3) >= 0 && (column - 3) >= 0 && Board[row - 1, column - 1] != Board[row, column]
                 && Board[row - 2, column - 2] != Board[row, column] && Board[row - 3, column - 3] == Board[row, column])
             {
-                return true;
+                if (Board[row - 1, column-1] != PlayerPiece.EMPTY && Board[row - 2, column-2] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
 
         public bool CaptureDownLeft(int row, int column)
         {
-            if ((row + 3) <= Board.GetLength(0) && (column - 3) >= 0 && Board[row + 1, column - 1] != Board[row, column]
+            if ((row + 3) < Board.GetLength(0) && (column - 3) >= 0 && Board[row + 1, column - 1] != Board[row, column]
                 && Board[row + 2, column - 2] != Board[row, column] && Board[row + 3, column - 3] == Board[row, column])
             {
-                return true;
+                if (Board[row + 1, column-1] != PlayerPiece.EMPTY && Board[row + 2, column-2] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
 
         public bool CaptureUpRight(int row, int column)
         {
-            if ((row - 3) >= 0 && (column + 3) <= Board.GetLength(0) && Board[row - 1, column + 1] != Board[row, column]
+            if ((row - 3) >= 0 && (column + 3) < Board.GetLength(0) && Board[row - 1, column + 1] != Board[row, column]
                 && Board[row - 2, column + 2] != Board[row, column] && Board[row - 3, column + 3] == Board[row, column])
             {
-                return true;
+                if (Board[row - 1, column+1] != PlayerPiece.EMPTY && Board[row - 2, column+2] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
 
         public bool CaptureDownRight(int row, int column)
         {
-            if ((row + 3) <= Board.GetLength(0) && (column + 3) <= Board.GetLength(0) && Board[row + 1, column + 1] != Board[row, column]
+            if ((row + 3) < Board.GetLength(0) && (column + 3) < Board.GetLength(0) && Board[row + 1, column + 1] != Board[row, column]
                 && Board[row + 2, column + 2] != Board[row, column] && Board[row + 3, column + 3] == Board[row, column])
             {
-                return true;
+                if (Board[row + 2, column+2] != PlayerPiece.EMPTY && Board[row + 1, column+1] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
