@@ -8,6 +8,7 @@ namespace PenteDLLTest
     public class PenteLibraryTest
     {
         PenteLibrary pente = new PenteLibrary();
+        #region black_tessera_tests
         [TestMethod]
         public void BlackTesseraTestVerticlePass()
         {//this way -> |
@@ -104,7 +105,8 @@ namespace PenteDLLTest
             bool isTessera = pente.Tessera();
             Assert.IsFalse(isTessera);
         }
-
+        #endregion
+        #region black_tria_tests
         [TestMethod]
         public void BlackTriaTestVerticlePass()
         {//this way -> |
@@ -193,11 +195,8 @@ namespace PenteDLLTest
             bool isTria = pente.Tria();
             Assert.IsFalse(isTria);
         }
-
-        /*
-         * WHITE START HERE 
-        */
-
+        #endregion
+        #region white_tessera_tests
         [TestMethod]
         public void WhiteTesseraTestVerticlePass()
         {//this way -> |
@@ -294,7 +293,8 @@ namespace PenteDLLTest
             bool isTessera = pente.Tessera();
             Assert.IsFalse(isTessera);
         }
-
+        #endregion
+        #region white_tria_tests
         [TestMethod]
         public void WhiteTriaTestVerticlePass()
         {//this way -> |
@@ -383,21 +383,118 @@ namespace PenteDLLTest
             bool isTria = pente.Tria();
             Assert.IsFalse(isTria);
         }
+        #endregion
 
         /*
          * WIN CONS START HERE
         */
+        #region white_pente_tests
+        [TestMethod]
+        public void WhiteWinPenteVerticlePass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
 
-        [TestMethod]
-        public void WhiteWinPentePass()
-        {
-            Assert.Inconclusive();
+            bool isWin = pente.FiveInARow(4,0);
+            Assert.IsTrue(isWin);
         }
         [TestMethod]
-        public void WhiteWinPenteFail()
+        public void WhiteWinPenteVerticleFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(4, 0);
+            Assert.IsFalse(isWin);
         }
+        [TestMethod]
+        public void WhiteWinPenteHorizontalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(0, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void WhiteWinPenteHorizontalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(4, 0);
+            Assert.IsFalse(isWin);
+        }
+        [TestMethod]
+        public void WhiteWinPentePositiveDiagonalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(0, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void WhiteWinPentePositiveDiagonalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 5] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(0, 5);
+            Assert.IsFalse(isWin);
+        }
+        [TestMethod]
+        public void WhiteWinPenteNegativeDiagonalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 4] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(4, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void WhiteWinPenteNegativeDiagonalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 6] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isWin = pente.FiveInARow(4, 6);
+            Assert.IsFalse(isWin);
+        }
+        #endregion
+        #region white_capture_tests
         [TestMethod]
         public void WhiteWinCapturePass()
         {
@@ -408,16 +505,114 @@ namespace PenteDLLTest
         {
             Assert.Inconclusive();
         }
+        #endregion
+        #region black_pente_tests
         [TestMethod]
-        public void BlackWinPentePass()
+        public void BlackWinPenteVerticlePass()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(4, 0);
+            Assert.IsTrue(isWin);
         }
         [TestMethod]
-        public void BlackWinPenteFail()
+        public void BlackWinPenteVerticleFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(4, 0);
+            Assert.IsFalse(isWin);
         }
+        [TestMethod]
+        public void BlackWinPenteHorizontalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(0, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void BlackWinPenteHorizontalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(4, 0);
+            Assert.IsFalse(isWin);
+        }
+        [TestMethod]
+        public void BlackWinPentePositiveDiagonalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(0, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void BlackWinPentePositiveDiagonalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 5] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(0, 5);
+            Assert.IsFalse(isWin);
+        }
+        [TestMethod]
+        public void BlackWinPenteNegativeDiagonalPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 4] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(4, 4);
+            Assert.IsTrue(isWin);
+        }
+        [TestMethod]
+        public void BlackWinPenteNegativeDiagonalFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 6] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isWin = pente.FiveInARow(4, 6);
+            Assert.IsFalse(isWin);
+        }
+        #endregion
+        #region black_capture_tests
         [TestMethod]
         public void BlackWinCapturePass()
         {
@@ -428,5 +623,6 @@ namespace PenteDLLTest
         {
             Assert.Inconclusive();
         }
+        #endregion
     }
 }
