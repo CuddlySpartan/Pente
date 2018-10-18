@@ -8,6 +8,9 @@ namespace PenteDLLTest
     public class PenteLibraryTest
     {
         PenteLibrary pente = new PenteLibrary();
+        /*
+         * TESSERA / TRIA TESTS
+        */
         #region black_tessera_tests
         [TestMethod]
         public void BlackTesseraTestVerticlePass()
@@ -386,7 +389,56 @@ namespace PenteDLLTest
         #endregion
 
         /*
-         * WIN CONS START HERE
+         * CAPTURE TESTS
+        */
+        #region white_capture_tests
+        [TestMethod]
+        public void WhiteCaptureVerticlePass()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureVerticleFail()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureHorizontalPass()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureHorizontalFail()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCapturePositiveDiagonalPass()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureNegativeDigonalFail()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureNegativeDiagonalPass()
+        {
+            Assert.Inconclusive();
+        }
+        [TestMethod]
+        public void WhiteCaptureNegativeDiagonalFail()
+        {
+            Assert.Inconclusive();
+        }
+        #endregion
+        #region black_capture_tests
+
+        #endregion
+
+        /*
+         * WIN CONDITION TESTS
         */
         #region white_pente_tests
         [TestMethod]
