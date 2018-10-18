@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -25,19 +26,21 @@ namespace Pente
         bool player1SecondTurn = false;
         int[] lastLocation;
 
-        //We aren't sure if the number 
-        //here should be 2 or 3
+        //Number of spaces the first player can't put their second piece on the second turn
         int tournamentSpaces = 2;
-
         //Colors we use for various things
         Brush player1 = Brushes.White;
         Brush player2 = Brushes.Black;
         Brush EmptySpace = Brushes.Red;
         Brush gridLines = Brushes.Black;
+
+        #region Window Loading
+        //Place holder for basic 19*19 board will be removed
         public GameWindow()
         {
             //Initializes the window for testing purposes
             InitializeComponent();
+            //Creates a board with a background
             for (int i = 0; i < 19 * 19; i++)
             {
                 Grid grid = new Grid();
@@ -56,6 +59,7 @@ namespace Pente
             GameGrid.Columns = 19;
         }
 
+        //Planning on using for board size
         public GameWindow(int size)
         {
             //Initializes the window
@@ -69,13 +73,21 @@ namespace Pente
             GameGrid.Rows = size;
             GameGrid.Columns = size;
         }
+
+        //PenteLibrary links the controller and the view together
         PenteLibrary pL = new PenteLibrary();
+
+        //Timer for timing turns
+        Timer timer = new Timer();
+
+        /*Loads Background
+         * Puts all elipses on the board*/
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Populates the board
             pL.StartGame();
 
-
+            //View contains ellipses that are opaque on every spot
             for (int i = 0; i < GameGrid.Rows; i++)
             {
                 for (int j = 0; j < GameGrid.Rows; j++)
@@ -87,13 +99,17 @@ namespace Pente
                     GameGrid.Children.Add(ellipse);
                 }
             }
+            timer.Interval = 1000;
+            timer.Enabled = true;
+            timer.Start();
+            timer.Elapsed += new ElapsedEventHandler(UpdateTimer);
         }
 
+        /*Hooks up both boards in the view and controller*/
         public void HookUpBoards()
         {
             //Updates the board in the DLL based on 
-            //the board in the view
-
+            //the board in the view                
             Ellipse[,] boardUpdater = new Ellipse[GameGrid.Columns, GameGrid.Rows];
             for (int i = 0; i < GameGrid.Rows; i++)
             {
@@ -102,7 +118,7 @@ namespace Pente
                     boardUpdater[i, j] = (Ellipse)GameGrid.Children[(i * GameGrid.Rows) + j];
                 }
             }
-
+            //This determines player color on board locations in the controller
             for (int i = 0; i < boardUpdater.GetLength(0); i++)
             {
                 for (int j = 0; j < boardUpdater.GetLength(1); j++)
@@ -123,11 +139,40 @@ namespace Pente
             }
         }
 
+        /*Method used for finding the piece clicked
+        The piece is then checked for wins, captures, 
+        and tessera*/
+
+        #endregion
+
+        #region Turn Taking
+
+        private void UpdateTimer(object source, ElapsedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    int labelValue;
+                    int.TryParse(timerLabel.Content.ToString(), out labelValue);
+                    if (labelValue != 0)
+                    {
+                        timerLabel.Content = labelValue - 1;
+                    }
+                    else
+                    {
+                        ChangeEllipseColor();
+                        pL.TurnOver();
+                        timerLabel.Content = "20";
+                    }
+                    if(labelValue <= 3)
+                    {
+                        Console.Beep();
+                    }
+
+                }));
+        }
+
         private int[] FindPiece(object piece)
         {
-            //Method used for finding the piece clicked
-            //The piece is then checked for wins, captures, 
-            //and tessera
 
             int[] locations = new int[2];
 
@@ -146,14 +191,76 @@ namespace Pente
 
             return locations;
         }
+        /*Forces player to place piece in center on first turn*/
+        private void PlayersFirstTurn(Ellipse ellipse)
+        {
+            if (player1FirstTurn)
+            {
+                //The opacity of the piece is what we are checking 
+                //to see if it has been placed already
+                if (ellipse.Opacity == 0)
+                {
+                    //Locates clicked location
+                    int[] pieceLocation = FindPiece(ellipse);
+                    //Checks to see if on first turn player clicked in the center of the board. 
+                    if (pieceLocation[0] == pL.Board.GetLength(0) / 2 && pieceLocation[1] == pL.Board.GetLength(1) / 2)
+                    {
+                        //Changes color of piece
+                        ellipse.Fill = player1;
+                        ellipse.Opacity = 100;
+                        pL.TurnOver();
+                        HookUpBoards();
+                        lastLocation = pieceLocation;
+                        player1FirstTurn = false;
+                        player1SecondTurn = true;
+                        ChangeEllipseColor();
+                        timerLabel.Content = "20";
+                    }
+                }
+            }
+        }
 
+        /*Forces player to place piece 3 locations away from first piece*/
+        private void PlayersSecondTurn(Ellipse ellipse)
+        {
+            //If this is the first player's second turn,
+            //they have restricted movement. This handles
+            //the restricted movement.
+            int[] newPieceLocation = FindPiece(ellipse);
+
+            if (newPieceLocation[0] > lastLocation[0] + tournamentSpaces ||
+                (newPieceLocation[0] < lastLocation[0] - tournamentSpaces) ||
+                (newPieceLocation[1] > lastLocation[1] + tournamentSpaces) ||
+                (newPieceLocation[1] < lastLocation[1] - tournamentSpaces))
+            {
+                player1SecondTurn = false;
+                //The opacity of the piece is what we are checking 
+                //to see if it has been placed already
+                if (ellipse.Opacity == 0)
+                {
+                    //Makes the piece the same color as the player who
+                    //placed the piece
+                    ellipse.Fill = player1;
+                    ellipse.Opacity = 100;
+                    pL.TurnOver();
+                    HookUpBoards();
+                    timerLabel.Content = "20";
+                }
+            }
+
+        }
+
+        //Updates the window when a player clicks the board
+        //Valid and invalid moves are handled
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
-            //Updates the window when a player clicks the board
-            //Valid and invalid moves are handled
 
             //This check is for tournament rules
-            if (!player1SecondTurn)
+            if (player1FirstTurn)
+            {
+                PlayersFirstTurn((Ellipse)sender);
+            }
+            else if (!player1SecondTurn || pL.isPlayer1Turn)
             {
                 Ellipse ellipse = (Ellipse)sender;
                 //The opacity of the piece is what we are checking 
@@ -173,10 +280,9 @@ namespace Pente
                         ellipse.Opacity = 100;
                         pL.TurnOver();
                     }
+                    timerLabel.Content = "20";
                     HookUpBoards();
                     int[] pieceLocation = FindPiece(ellipse);
-                    if(player1FirstTurn)
-                    lastLocation = pieceLocation;
                     //Checks for captures and handles them
                     List<int> captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
                     if (captureLocation.Count > 0)
@@ -187,6 +293,23 @@ namespace Pente
                             ellipse1.Opacity = 0;
                             ellipse1.Fill = EmptySpace;
                         }
+                    }
+                    if (pL.Tessera(pieceLocation[0], pieceLocation[1]))
+                    {
+                        if (pL.isPlayer1Turn)
+                        {
+                            lblTessera.Content = "Player 1 Tessera";
+                            lblTessera.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            lblTessera.Content = "Player 2 Tessera";
+                            lblTessera.Visibility = Visibility.Visible;
+                        }
+                    }
+                    else
+                    {
+                        lblTessera.Visibility = Visibility.Hidden;
                     }
                     HookUpBoards();
                     //Checks for a five-in-a-row win
@@ -203,8 +326,9 @@ namespace Pente
                         }
                     }
                     //Handles tournament rule
-                    if(player1FirstTurn && !pL.isPlayer1Turn)
+                    if (player1FirstTurn && !pL.isPlayer1Turn)
                     {
+
                         player1FirstTurn = false;
                         player1SecondTurn = true;
                     }
@@ -212,71 +336,13 @@ namespace Pente
             }
             else
             {
-                //If this is the first player's second turn,
-                //they have restricted movement. This handles
-                //the restricted movement.
-                Ellipse ellipse = (Ellipse)sender;
-                int[] newPieceLocation = FindPiece(ellipse);
-
-                if (newPieceLocation[0] > lastLocation[0]+tournamentSpaces || 
-                    (newPieceLocation[0] < lastLocation[0] - tournamentSpaces) || 
-                    (newPieceLocation[1] > lastLocation[1] + tournamentSpaces) || 
-                    (newPieceLocation[1] < lastLocation[1] - tournamentSpaces))
-                {
-                    player1SecondTurn = false;
-                    //The opacity of the piece is what we are checking 
-                    //to see if it has been placed already
-                    if (ellipse.Opacity == 0)
-                    {
-                        //Makes the piece the same color as the player who
-                        //placed the piece
-                        if (pL.isPlayer1Turn)
-                        {
-                            ellipse.Fill = player2;
-                            ellipse.Opacity = 100;
-                            pL.TurnOver();
-                        }
-                        else
-                        {
-                            ellipse.Fill = player1;
-                            ellipse.Opacity = 100;
-                            pL.TurnOver();
-                        }
-                        HookUpBoards();
-                        //Checks if there is a capture and handles it appropriately
-                        List<int> captureLocation = pL.Capture(newPieceLocation[0], newPieceLocation[1]);
-                        if (captureLocation.Count > 0)
-                        {
-                            for (int pieceCount = 0; pieceCount < captureLocation.Count; pieceCount = pieceCount + 2)
-                            {
-                                Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[pieceCount + 1] + captureLocation[pieceCount] * GameGrid.Rows)];
-                                ellipse1.Opacity = 0;
-                                ellipse1.Fill = EmptySpace;
-                            }
-                        }
-                        HookUpBoards();
-                        //Checks for a five-in-a-row win.
-                        //Both scenarios open the Game Over Window
-                        if (pL.FiveInARow(newPieceLocation[0], newPieceLocation[1]))
-                        {
-                            if (pL.isPlayer1Turn)
-                            {
-                                MessageBox.Show("Player 1 wins");
-                            }
-                            else
-                            {
-                                MessageBox.Show("Player 2 wins");
-                            }
-                        }
-
-                    }
-                }
+                PlayersSecondTurn((Ellipse)sender);
             }
             //If either player has captured more
             //than 5 pieces, the game ends and that
             //player wins.
             //Both scenarios open the Game Over Window
-            if(pL.player1Captures >= 5)
+            if (pL.player1Captures >= 5)
             {
                 MessageBox.Show("Trash p1");
             }
@@ -291,7 +357,7 @@ namespace Pente
         private void ChangeEllipseColor()
         {
             //Changes the color of the turn indicator
-            if(pL.isPlayer1Turn)
+            if (pL.isPlayer1Turn)
             {
                 turnIndicator.Fill = player2;
             }
@@ -300,8 +366,11 @@ namespace Pente
                 turnIndicator.Fill = player1;
             }
         }
+        #endregion
 
         #region NameChanging
+
+        #region Player 1 Text
         private void Player1Name_LostFocus(object sender, RoutedEventArgs e)
         {
             //Checks if textbox is empty
@@ -340,7 +409,18 @@ namespace Pente
                 lblPlayer1Name.Visibility = Visibility.Visible;
             }
         }
-
+        private void Player1NameEdit_Click(object sender, MouseButtonEventArgs e)
+        {
+            //When pencil is clicked textbox becomes available 
+            tbxPlayer1Name.IsEnabled = true;
+            tbxPlayer1Name.Visibility = Visibility.Visible;
+            tbxPlayer1Name.Focusable = true;
+            tbxPlayer1Name.Focus();
+            tbxPlayer1Name.Text = "";
+            lblPlayer1Name.Visibility = Visibility.Hidden;
+        }
+        #endregion
+        #region Player 2 Text
         private void Player2Name_LostFocus(object sender, RoutedEventArgs e)
         {
             //Checks if textbox is empty
@@ -391,17 +471,7 @@ namespace Pente
             lblPlayer2Name.Visibility = Visibility.Hidden;
 
         }
-
-        private void Player1NameEdit_Click(object sender, MouseButtonEventArgs e)
-        {
-            //When pencil is clicked textbox becomes available 
-            tbxPlayer1Name.IsEnabled = true;
-            tbxPlayer1Name.Visibility = Visibility.Visible;
-            tbxPlayer1Name.Focusable = true;
-            tbxPlayer1Name.Focus();
-            tbxPlayer1Name.Text = "";
-            lblPlayer1Name.Visibility = Visibility.Hidden;
-        }
+        #endregion
         #endregion
     }
 }

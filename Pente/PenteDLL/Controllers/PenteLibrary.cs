@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace PenteDLL.Controllers
 {
@@ -19,6 +20,8 @@ namespace PenteDLL.Controllers
         //If this is 5 or more, that player wins
         public int player1Captures = 0;
         public int player2Captures = 0;
+
+        
         public enum PlayerPiece
         {
             //Enum for determining which player owns which piece
@@ -31,19 +34,182 @@ namespace PenteDLL.Controllers
         {
             //Initializes the board
             Board = new PlayerPiece[19, 19];
+            
         }
 
-        public void Tessera()
+        
+
+        //Detects Tessera
+        public bool Tessera(int column, int row)
         {
-            //Detects Tessera
+            if (CheckTesseraUp(row, column, 0) + CheckTesseraDown(row, column, 1) == 6)
+            {
+                return true;
+            }
+
+            if (CheckTesseraLeft(row, column, 0) + CheckTesseraRight(row, column, 1) == 6)
+            {
+                return true;
+            }
+
+            if (CheckTesseraUpLeft(row, column, 0) + CheckTesseraDownRight(row, column, 1) == 6)
+            {
+                return true;
+            }
+
+            if (CheckTesseraDownLeft(row, column, 0) + CheckTesseraUpRight(row, column, 1) == 6)
+            {
+                return true;
+            }
+
+            return false;
         }
 
-        public void Tria()
+        #region Tessera Checking
+        public int CheckTesseraUp(int row, int column, int a)
+        {
+            if ((row - 1) >= 0 && (Board[row, column] == Board[row - 1, column] || Board[row - 1, column] == PlayerPiece.EMPTY))
+            {
+                if (Board[row - 1, column] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraUp(row - 1, column, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraDown(int row, int column, int a)
+        {
+            if ((row + 1) < Board.GetLength(0) && (Board[row, column] == Board[row + 1, column] || Board[row + 1, column] == PlayerPiece.EMPTY))
+            {
+                if (Board[row + 1, column] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraDown(row + 1, column, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraLeft(int row, int column, int a)
+        {
+            if ((column - 1) >= 0 && (Board[row, column] == Board[row, column - 1] || Board[row, column - 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row, column - 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraLeft(row, column - 1, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraRight(int row, int column, int a)
+        {
+            if ((column + 1) < Board.GetLength(0) && (Board[row, column] == Board[row, column + 1] || Board[row, column + 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row, column + 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraRight(row, column + 1, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraUpLeft(int row, int column, int a)
+        {
+            if ((row - 1) >= 0 && (column - 1) >= 0 && (Board[row, column] == Board[row - 1, column - 1] || Board[row - 1, column - 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row - 1, column - 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraUpLeft(row - 1, column - 1, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraDownLeft(int row, int column, int a)
+        {
+            if ((row + 1) < Board.GetLength(0) && (column - 1) >= 0 && (Board[row, column] == Board[row + 1, column - 1] || Board[row + 1, column - 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row + 1, column - 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraDownLeft(row + 1, column - 1, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraUpRight(int row, int column, int a)
+        {
+            if ((row - 1) >= 0 && (column + 1) < Board.GetLength(0) && (Board[row, column] == Board[row - 1, column + 1] || Board[row - 1, column + 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row - 1, column + 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraUpRight(row - 1, column + 1, a + 1);
+                }
+            }
+            return a;
+        }
+
+        public int CheckTesseraDownRight(int row, int column, int a)
+        {
+            if ((row + 1) < Board.GetLength(0) && (column + 1) < Board.GetLength(0) && (Board[row, column] == Board[row + 1, column + 1] || Board[row + 1, column + 1] == PlayerPiece.EMPTY))
+            {
+                if (Board[row + 1, column + 1] == PlayerPiece.EMPTY)
+                {
+                    return a + 1;
+                }
+                else
+                {
+                    a = CheckTesseraDownRight(row + 1, column + 1, a + 1);
+                }
+            }
+            return a;
+        }
+        #endregion
+
+        public bool Tria(int i, int j)
         {
             //Detects Tria
+            return false;
         }
 
+        public int CheckTriaUp(int row, int column, int a)
+        {
+            if ((row - 1) >= 0 && (Board[row, column] == Board[row - 1, column] || Board[row - 1, column] == PlayerPiece.EMPTY))
+            {
 
+                a = CheckTriaUp(row - 1, column, a + 1);
+            }
+            return a;
+        }
 
         public void TurnOver()
         {
@@ -51,10 +217,10 @@ namespace PenteDLL.Controllers
             isPlayer1Turn = !isPlayer1Turn;
         }
 
+        /*Adds together how many pieces are in a row
+        If it's 5 or more the player wins*/
         public bool FiveInARow(int i, int j)
         {
-            //Adds together how many pieces are in a row
-            //If it's 5 or more the player wins
             if (CheckUp(j, i, 0) + CheckDown(j, i, 1) >= 5)
             {
                 return true;
@@ -156,74 +322,74 @@ namespace PenteDLL.Controllers
         }
         #endregion
 
+        /*When a piece is placed that satisfies the
+        conditions for capturing, the pieces captured
+        are removed from the board.*/
         public List<int> Capture(int column, int row)
         {
-            //When a piece is placed that satisfies the
-            //conditions for capturing, the pieces captured
-            //are removed from the board.
             List<int> spacesCaptured = new List<int>();
             if (CaptureUp(row, column))
             {
-                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(row - 1);
                 spacesCaptured.Add(column);
-                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(row - 2);
                 spacesCaptured.Add(column);
             }
             if (CaptureDown(row, column))
             {
-                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(row + 1);
                 spacesCaptured.Add(column);
-                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(row + 2);
                 spacesCaptured.Add(column);
             }
             if (CaptureLeft(row, column))
             {
                 spacesCaptured.Add(row);
-                spacesCaptured.Add(column-1);
+                spacesCaptured.Add(column - 1);
                 spacesCaptured.Add(row);
-                spacesCaptured.Add(column-2);
+                spacesCaptured.Add(column - 2);
             }
             if (CaptureRight(row, column))
             {
                 spacesCaptured.Add(row);
                 spacesCaptured.Add(column + 1);
                 spacesCaptured.Add(row);
-                spacesCaptured.Add(column+2);
+                spacesCaptured.Add(column + 2);
             }
             if (CaptureUpLeft(row, column))
             {
-                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(row - 1);
                 spacesCaptured.Add(column - 1);
-                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(row - 2);
                 spacesCaptured.Add(column - 2);
 
             }
             if (CaptureDownLeft(row, column))
             {
-                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(row + 1);
                 spacesCaptured.Add(column - 1);
-                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(row + 2);
                 spacesCaptured.Add(column - 2);
 
             }
             if (CaptureUpRight(row, column))
             {
-                spacesCaptured.Add(row-1);
+                spacesCaptured.Add(row - 1);
                 spacesCaptured.Add(column + 1);
-                spacesCaptured.Add(row-2);
+                spacesCaptured.Add(row - 2);
                 spacesCaptured.Add(column + 2);
 
             }
             if (CaptureDownRight(row, column))
             {
-                spacesCaptured.Add(row+1);
+                spacesCaptured.Add(row + 1);
                 spacesCaptured.Add(column + 1);
-                spacesCaptured.Add(row+2);
+                spacesCaptured.Add(row + 2);
                 spacesCaptured.Add(column + 2);
             }
-            for(int i =0; i < spacesCaptured.Count; i=i+4)
+            for (int i = 0; i < spacesCaptured.Count; i = i + 4)
             {
-                if(isPlayer1Turn)
+                if (isPlayer1Turn)
                 {
                     player1Captures++;
                 }
@@ -242,8 +408,8 @@ namespace PenteDLL.Controllers
             if ((row - 3) >= 0 && Board[row - 1, column] != Board[row, column]
                 && Board[row - 2, column] != Board[row, column] && Board[row - 3, column] == Board[row, column])
             {
-                if(Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] != PlayerPiece.EMPTY)
-                return true;
+                if (Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] != PlayerPiece.EMPTY)
+                    return true;
             }
             return false;
         }
@@ -264,7 +430,7 @@ namespace PenteDLL.Controllers
             if ((column - 3) >= 0 && Board[row, column - 1] != Board[row, column]
                 && Board[row, column - 2] != Board[row, column] && Board[row, column - 3] == Board[row, column])
             {
-                if (Board[row, column-1] != PlayerPiece.EMPTY && Board[row, column-2] != PlayerPiece.EMPTY)
+                if (Board[row, column - 1] != PlayerPiece.EMPTY && Board[row, column - 2] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;
@@ -275,7 +441,7 @@ namespace PenteDLL.Controllers
             if ((column + 3) < Board.GetLength(0) && Board[row, column + 1] != Board[row, column]
                 && Board[row, column + 2] != Board[row, column] && Board[row, column + 3] == Board[row, column])
             {
-                if (Board[row, column+1] != PlayerPiece.EMPTY && Board[row, column+1] != PlayerPiece.EMPTY)
+                if (Board[row, column + 1] != PlayerPiece.EMPTY && Board[row, column + 1] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;
@@ -286,7 +452,7 @@ namespace PenteDLL.Controllers
             if ((row - 3) >= 0 && (column - 3) >= 0 && Board[row - 1, column - 1] != Board[row, column]
                 && Board[row - 2, column - 2] != Board[row, column] && Board[row - 3, column - 3] == Board[row, column])
             {
-                if (Board[row - 1, column-1] != PlayerPiece.EMPTY && Board[row - 2, column-2] != PlayerPiece.EMPTY)
+                if (Board[row - 1, column - 1] != PlayerPiece.EMPTY && Board[row - 2, column - 2] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;
@@ -297,7 +463,7 @@ namespace PenteDLL.Controllers
             if ((row + 3) < Board.GetLength(0) && (column - 3) >= 0 && Board[row + 1, column - 1] != Board[row, column]
                 && Board[row + 2, column - 2] != Board[row, column] && Board[row + 3, column - 3] == Board[row, column])
             {
-                if (Board[row + 1, column-1] != PlayerPiece.EMPTY && Board[row + 2, column-2] != PlayerPiece.EMPTY)
+                if (Board[row + 1, column - 1] != PlayerPiece.EMPTY && Board[row + 2, column - 2] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;
@@ -308,7 +474,7 @@ namespace PenteDLL.Controllers
             if ((row - 3) >= 0 && (column + 3) < Board.GetLength(0) && Board[row - 1, column + 1] != Board[row, column]
                 && Board[row - 2, column + 2] != Board[row, column] && Board[row - 3, column + 3] == Board[row, column])
             {
-                if (Board[row - 1, column+1] != PlayerPiece.EMPTY && Board[row - 2, column+2] != PlayerPiece.EMPTY)
+                if (Board[row - 1, column + 1] != PlayerPiece.EMPTY && Board[row - 2, column + 2] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;
@@ -319,7 +485,7 @@ namespace PenteDLL.Controllers
             if ((row + 3) < Board.GetLength(0) && (column + 3) < Board.GetLength(0) && Board[row + 1, column + 1] != Board[row, column]
                 && Board[row + 2, column + 2] != Board[row, column] && Board[row + 3, column + 3] == Board[row, column])
             {
-                if (Board[row + 2, column+2] != PlayerPiece.EMPTY && Board[row + 1, column+1] != PlayerPiece.EMPTY)
+                if (Board[row + 2, column + 2] != PlayerPiece.EMPTY && Board[row + 1, column + 1] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;

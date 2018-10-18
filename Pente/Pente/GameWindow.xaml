@@ -10,8 +10,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="47*"/>
             <RowDefinition Height="49*"/>
-            <RowDefinition Height="111*"/>
-            <RowDefinition Height="213*"/>
+            <RowDefinition Height="110*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="0*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="650*"/>
@@ -21,14 +26,23 @@
         <Image Source="images/edit.png" MouseLeftButtonUp="Player1NameEdit_Click" Grid.Column="2" Grid.Row="0"/>
         <Image Source="images/edit.png" MouseLeftButtonUp="Player2NameEdit_Click" Grid.Column="2" Grid.Row="1"/>
         <Label Name="lblPlayer1Name" Content="{Binding ElementName=tbxPlayer1Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-        <Label Name="lblPlayer2Name" Content="{Binding ElementName=tbxPlayer2Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
-        <TextBox Name="tbxPlayer1Name" Text="Player1" Background="Transparent" LostFocus="Player1Name_LostFocus" KeyDown="Player1Name_KeyDown" Visibility="Hidden" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="20" />
-        <TextBox Name="tbxPlayer2Name" Text="Player2" Background="Transparent" LostFocus="Player2Name_LostFocus" KeyDown="Player2Name_KeyDown" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Foreground="White" FontSize="20" />
-        <UniformGrid Name="Background" Grid.Column="0" Margin="0,0,0.333,-0.333" Grid.RowSpan="4">
+        <Label Name="lblPlayer2Name" Content="{Binding ElementName=tbxPlayer2Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" Foreground="White" Grid.RowSpan="2"/>
+        <TextBox Name="tbxPlayer1Name" Text="Player1" Background="Transparent" LostFocus="Player1Name_LostFocus" KeyDown="Player1Name_KeyDown" Visibility="Hidden" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="20" Grid.ColumnSpan="2" Grid.RowSpan="1" />
+        <TextBox Name="tbxPlayer2Name" Text="Player2" Background="Transparent" LostFocus="Player2Name_LostFocus" KeyDown="Player2Name_KeyDown" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Foreground="White" FontSize="20" Grid.ColumnSpan="2" Grid.RowSpan="1" />
+        <UniformGrid Name="Background" Grid.Column="0" Grid.RowSpan="8">
         </UniformGrid>
-        <Grid Margin="0,0,17.333,-0.333" Grid.Column="0" Grid.RowSpan="4">
+        <Grid Grid.Column="0" Grid.RowSpan="8">
             <UniformGrid Name="GameGrid" Grid.Column="0"/>
+            <Ellipse VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     Fill="Yellow" Height="5" Width="5" IsEnabled="False"></Ellipse>
         </Grid>
-        <Ellipse Name="turnIndicator" Fill="White" Grid.Row="2" Grid.Column="1" Stroke="Black" Width="auto" Height="auto"/>
+        <Ellipse Name="turnIndicator" Fill="White" Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="1" Stroke="Black" Width="auto" Height="auto"/>
+        <Button Content="Help" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2"/>
+        <Button Content="Restart" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" />
+        <Button Content="Menu" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2"/>
+        <Label Name="lblTria" Content="Tria"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Foreground="#FFFA3636" Visibility="Hidden"/>
+        <Label Name="lblTessera" Content="Tressa" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Foreground="#FFFA3636" FontSize="20" Visibility="Hidden"/>
+        <Label Name="timerLabel" Foreground="LawnGreen" Content="20" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24"/>
     </Grid>
 </Window>
