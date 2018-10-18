@@ -8,12 +8,20 @@ namespace PenteDLL.Controllers
 {
     public class PenteLibrary
     {
+        //Whose turn it is
+        //This determines what color the piece is
         public bool isPlayer1Turn = false;
+
+        //The board
         public PlayerPiece[,] Board { get; set; }
+
+        //Counter for how many captures each player has
+        //If this is 5 or more, that player wins
         public int player1Captures = 0;
         public int player2Captures = 0;
         public enum PlayerPiece
         {
+            //Enum for determining which player owns which piece
             EMPTY,
             PLAYER1,
             PLAYER2
@@ -21,28 +29,32 @@ namespace PenteDLL.Controllers
 
         public void StartGame()
         {
+            //Initializes the board
             Board = new PlayerPiece[19, 19];
         }
 
         public void Tessera()
         {
-
+            //Detects Tessera
         }
 
         public void Tria()
         {
-
+            //Detects Tria
         }
 
 
 
         public void TurnOver()
         {
+            //Toggles which turn it is
             isPlayer1Turn = !isPlayer1Turn;
         }
 
         public bool FiveInARow(int i, int j)
         {
+            //Adds together how many pieces are in a row
+            //If it's 5 or more the player wins
             if (CheckUp(j, i, 0) + CheckDown(j, i, 1) >= 5)
             {
                 return true;
@@ -67,7 +79,7 @@ namespace PenteDLL.Controllers
         }
 
         #region checking
-        //Checks for 5 in a row wins
+        //Checks for 5 in a row wins in every direction
         public int CheckUp(int row, int column, int a)
         {
             if ((row - 1) >= 0 && (Board[row, column] == Board[row - 1, column]))
@@ -146,6 +158,9 @@ namespace PenteDLL.Controllers
 
         public List<int> Capture(int column, int row)
         {
+            //When a piece is placed that satisfies the
+            //conditions for capturing, the pieces captured
+            //are removed from the board.
             List<int> spacesCaptured = new List<int>();
             if (CaptureUp(row, column))
             {
@@ -221,6 +236,7 @@ namespace PenteDLL.Controllers
         }
 
         #region capturing
+        //Capturing Logic
         public bool CaptureUp(int row, int column)
         {
             if ((row - 3) >= 0 && Board[row - 1, column] != Board[row, column]

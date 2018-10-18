@@ -20,16 +20,23 @@ namespace Pente
     /// </summary>
     public partial class GameWindow : Window
     {
+        //Used for tournament rule
         bool player1FirstTurn = true;
         bool player1SecondTurn = false;
         int[] lastLocation;
+
+        //We aren't sure if the number 
+        //here should be 2 or 3
         int tournamentSpaces = 2;
+
+        //Colors we use for various things
         Brush player1 = Brushes.White;
         Brush player2 = Brushes.Black;
         Brush EmptySpace = Brushes.Red;
         Brush gridLines = Brushes.Black;
         public GameWindow()
         {
+            //Initializes the window for testing purposes
             InitializeComponent();
             for (int i = 0; i < 19 * 19; i++)
             {
@@ -51,6 +58,7 @@ namespace Pente
 
         public GameWindow(int size)
         {
+            //Initializes the window
             InitializeComponent();
             for (int i = 0; i < size * size; i++)
             {
@@ -64,6 +72,7 @@ namespace Pente
         PenteLibrary pL = new PenteLibrary();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //Populates the board
             pL.StartGame();
 
 
@@ -82,6 +91,9 @@ namespace Pente
 
         public void HookUpBoards()
         {
+            //Updates the board in the DLL based on 
+            //the board in the view
+
             Ellipse[,] boardUpdater = new Ellipse[GameGrid.Columns, GameGrid.Rows];
             for (int i = 0; i < GameGrid.Rows; i++)
             {
@@ -113,6 +125,10 @@ namespace Pente
 
         private int[] FindPiece(object piece)
         {
+            //Method used for finding the piece clicked
+            //The piece is then checked for wins, captures, 
+            //and tessera
+
             int[] locations = new int[2];
 
             for (int i = 0; i < GameGrid.Rows; i++)
@@ -133,11 +149,18 @@ namespace Pente
 
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
+            //Updates the window when a player clicks the board
+            //Valid and invalid moves are handled
+
+            //This check is for tournament rules
             if (!player1SecondTurn)
             {
                 Ellipse ellipse = (Ellipse)sender;
+                //The opacity of the piece is what we are checking 
+                //to see if it has been placed already
                 if (ellipse.Opacity == 0)
                 {
+                    //Changes the piece placed to match the player's color
                     if (pL.isPlayer1Turn)
                     {
                         ellipse.Fill = player2;
@@ -154,7 +177,8 @@ namespace Pente
                     int[] pieceLocation = FindPiece(ellipse);
                     if(player1FirstTurn)
                     lastLocation = pieceLocation;
-                     List<int> captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
+                    //Checks for captures and handles them
+                    List<int> captureLocation = pL.Capture(pieceLocation[0], pieceLocation[1]);
                     if (captureLocation.Count > 0)
                     {
                         for (int pieceCount = 0; pieceCount < captureLocation.Count; pieceCount = pieceCount + 2)
@@ -165,6 +189,8 @@ namespace Pente
                         }
                     }
                     HookUpBoards();
+                    //Checks for a five-in-a-row win
+                    //Both scenarios will open the Game Over Window
                     if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
                     {
                         if (pL.isPlayer1Turn)
@@ -176,6 +202,7 @@ namespace Pente
                             MessageBox.Show("Player 2 wins");
                         }
                     }
+                    //Handles tournament rule
                     if(player1FirstTurn && !pL.isPlayer1Turn)
                     {
                         player1FirstTurn = false;
@@ -185,6 +212,9 @@ namespace Pente
             }
             else
             {
+                //If this is the first player's second turn,
+                //they have restricted movement. This handles
+                //the restricted movement.
                 Ellipse ellipse = (Ellipse)sender;
                 int[] newPieceLocation = FindPiece(ellipse);
 
@@ -194,8 +224,12 @@ namespace Pente
                     (newPieceLocation[1] < lastLocation[1] - tournamentSpaces))
                 {
                     player1SecondTurn = false;
+                    //The opacity of the piece is what we are checking 
+                    //to see if it has been placed already
                     if (ellipse.Opacity == 0)
                     {
+                        //Makes the piece the same color as the player who
+                        //placed the piece
                         if (pL.isPlayer1Turn)
                         {
                             ellipse.Fill = player2;
@@ -209,6 +243,7 @@ namespace Pente
                             pL.TurnOver();
                         }
                         HookUpBoards();
+                        //Checks if there is a capture and handles it appropriately
                         List<int> captureLocation = pL.Capture(newPieceLocation[0], newPieceLocation[1]);
                         if (captureLocation.Count > 0)
                         {
@@ -220,6 +255,8 @@ namespace Pente
                             }
                         }
                         HookUpBoards();
+                        //Checks for a five-in-a-row win.
+                        //Both scenarios open the Game Over Window
                         if (pL.FiveInARow(newPieceLocation[0], newPieceLocation[1]))
                         {
                             if (pL.isPlayer1Turn)
@@ -235,6 +272,10 @@ namespace Pente
                     }
                 }
             }
+            //If either player has captured more
+            //than 5 pieces, the game ends and that
+            //player wins.
+            //Both scenarios open the Game Over Window
             if(pL.player1Captures >= 5)
             {
                 MessageBox.Show("Trash p1");
@@ -243,11 +284,13 @@ namespace Pente
             {
                 MessageBox.Show("Your the best p2");
             }
+            //Toggles the turn indicator
             ChangeEllipseColor();
         }
 
         private void ChangeEllipseColor()
         {
+            //Changes the color of the turn indicator
             if(pL.isPlayer1Turn)
             {
                 turnIndicator.Fill = player2;
