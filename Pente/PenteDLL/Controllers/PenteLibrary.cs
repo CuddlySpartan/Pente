@@ -30,10 +30,10 @@ namespace PenteDLL.Controllers
             PLAYER2
         }
 
-        public void StartGame()
+        public void StartGame(int size)
         {
             //Initializes the board
-            Board = new PlayerPiece[19, 19];
+            Board = new PlayerPiece[size, size];
             
         }
 
@@ -195,6 +195,8 @@ namespace PenteDLL.Controllers
         }
         #endregion
 
+        #region Tria Checking
+
         public bool Tria(int i, int j)
         {
             //Detects Tria
@@ -211,10 +213,29 @@ namespace PenteDLL.Controllers
             return a;
         }
 
+        #endregion
+
         public void TurnOver()
         {
             //Toggles which turn it is
             isPlayer1Turn = !isPlayer1Turn;
+        }
+
+        public int[] AITurn()
+        {
+            Random r = new Random();
+
+            int row;
+            int column;
+            while (true)
+            {
+                row = r.Next(Board.GetLength(0));
+                column = r.Next(Board.GetLength(0));
+                if (Board[row, column] == PlayerPiece.EMPTY)
+                {
+                    return new int[] { row, column };
+                }
+            }
         }
 
         /*Adds together how many pieces are in a row
