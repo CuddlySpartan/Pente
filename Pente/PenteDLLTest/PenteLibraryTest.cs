@@ -394,48 +394,391 @@ namespace PenteDLLTest
         */
         #region white_capture_tests
         [TestMethod]
-        public void WhiteCaptureVerticlePass()
+        public void WhiteCaptureUpPass()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUp(3, 0);
+            Assert.IsTrue(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureVerticleFail()
+        public void WhiteCaptureUpFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[6, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUp(3, 0);
+            Assert.IsFalse(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureHorizontalPass()
+        public void WhiteCaptureDownPass()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDown(0, 0);
+            Assert.IsTrue(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureHorizontalFail()
+        public void WhiteCaptureDownFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDown(8, 0);
+            Assert.IsFalse(isCapture);
         }
         [TestMethod]
-        public void WhiteCapturePositiveDiagonalPass()
+        public void WhiteCaptureLeftPass()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureLeft(0, 3);
+            Assert.IsTrue(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureNegativeDigonalFail()
+        public void WhiteCaptureLeftFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureLeft(0, 3);
+            Assert.IsFalse(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureNegativeDiagonalPass()
+        public void WhiteCaptureRightPass()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureRight(0, 1);
+            Assert.IsTrue(isCapture);
         }
         [TestMethod]
-        public void WhiteCaptureNegativeDiagonalFail()
+        public void WhiteCaptureRightFail()
         {
-            Assert.Inconclusive();
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 5] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureRight(0, 1);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureUpLeftPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUpLeft(3, 3);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureUpLeftFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUpLeft(3, 3);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureDownLeftPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDownLeft(0, 3);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureDownLeftFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDownLeft(0, 4);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureUpRightPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUpRight(3, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureUpRightFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureUpRight(3, 0);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureDownRightPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDownRight(0, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void WhiteCaptureDownRightFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+
+            bool isCapture = pente.CaptureDownRight(0, 0);
+            Assert.IsFalse(isCapture);
         }
         #endregion
         #region black_capture_tests
+        [TestMethod]
+        public void BlackCaptureUpPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
 
+            bool isCapture = pente.CaptureUp(3, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureUpFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[6, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureUp(3, 0);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDown(0, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[8, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDown(8, 0);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureLeftPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureLeft(0, 3);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureLeftFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureLeft(0, 3);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureRightPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureRight(0, 1);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureRightFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 5] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureRight(0, 1);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureUpLeftPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureUpLeft(3, 3);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureUpLeftFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[4, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureUpLeft(3, 3);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownLeftPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDownLeft(0, 3);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownLeftFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 4] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDownLeft(0, 4);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureUpRightPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureUpRight(3, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureUpRightFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[1, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureUpRight(3, 0);
+            Assert.IsFalse(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownRightPass()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDownRight(0, 0);
+            Assert.IsTrue(isCapture);
+        }
+        [TestMethod]
+        public void BlackCaptureDownRightFail()
+        {
+            pente.Board = new PenteLibrary.PlayerPiece[19, 19];
+            pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[1, 3] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[0, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+
+            bool isCapture = pente.CaptureDownRight(0, 0);
+            Assert.IsFalse(isCapture);
+        }
         #endregion
 
         /*
@@ -551,12 +894,14 @@ namespace PenteDLLTest
         [TestMethod]
         public void WhiteWinCapturePass()
         {
-            Assert.Inconclusive();
+            pente.player2Captures = 5;
+            Assert.IsTrue(pente.player2Captures >= 5);
         }
         [TestMethod]
         public void WhiteWinCaptureFail()
         {
-            Assert.Inconclusive();
+            pente.player2Captures = 4;
+            Assert.IsFalse(pente.player2Captures >= 5);
         }
         #endregion
         #region black_pente_tests
@@ -669,12 +1014,14 @@ namespace PenteDLLTest
         [TestMethod]
         public void BlackWinCapturePass()
         {
-            Assert.Inconclusive();
+            pente.player1Captures = 5;
+            Assert.IsTrue(pente.player1Captures >= 5);
         }
         [TestMethod]
         public void BlackWinCaptureFail()
         {
-            Assert.Inconclusive();
+            pente.player1Captures = 4;
+            Assert.IsFalse(pente.player1Captures >= 5);
         }
         #endregion
     }
