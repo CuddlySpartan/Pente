@@ -5,8 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pente"
         mc:Ignorable="d"
-        Title="Instructions" Height="450" Width="800">
+        Title="Instructions" Height="600" Width="1000" Background="Purple">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="225*"/>
+            <ColumnDefinition Width="448*"/>
+            <ColumnDefinition Width="225*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="83*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="33*"/>
+            <RowDefinition Height="63*"/>
+            <RowDefinition Height="69*"/>
+            <RowDefinition Height="88*"/>
+            <RowDefinition Height="86*"/>
+            <RowDefinition Height="63*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+        <Button Name="btnExit" Content="Close" VerticalAlignment="Center" HorizontalAlignment="Center" Width="117" Height="56" Grid.Row="7" Grid.Column="1" Click="btnExit_Click"/>
+        <Image Source="Images/2ndTria.PNG"  Grid.Column="2" Margin="1.333,17,0.333,10.333"/>
+        <Image Source="Images/Tria.PNG" Grid.Column="2" Grid.Row="3" Margin="1.333,60.333,0.333,87.333" Grid.RowSpan="3"/>
+        <Image Source="Images/Tessera.PNG" Grid.Row="3" Grid.Column="0" Margin="0,60.333,0.333,87.333" Grid.RowSpan="3"/>
+        <Image Source="Images/FiveInARow.PNG" Grid.Column="1" Grid.Row="1" />
+        <Image Source="Images/Captures.PNG" Margin="0,0,1.333,0.333"/>
+        <Label Content="Pente Rules" FontSize="50" Grid.Column="1" HorizontalAlignment="Center" Foreground="LightGreen" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Label Grid.Row="2" Grid.RowSpan="5" Grid.Column="1" VerticalContentAlignment="Center">
+            <TextBlock Foreground="LightGreen" VerticalAlignment="Center" FontSize="12" Height="330">
+                <Bold>Goal of Pente:</Bold>
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>                
+                - Perform 5 captures
+                <LineBreak></LineBreak>
+                - Get 5 of your pieces in a row.
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>
+                <Bold>Turn Taking:</Bold>
+                <LineBreak></LineBreak>                
+                - Players take turns placing pieces on the board                
+                <LineBreak></LineBreak>
+                - The player who goes first must place their first piece in the center space 
+                <LineBreak></LineBreak>
+                - The same player may not place the second piece within 3 spaces of their first piece 
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>
+                <Bold>Captures</Bold>
+                - Captures occur when 2 enemy pieces in a line are flanked on both sides by your pieces. 
+                <LineBreak></LineBreak>
+                - Example of a capture: XOO_ becomes XOOX after player X places his piece. 
+                <LineBreak></LineBreak>
+                - It then removes the 2 enemy pieces making X__X. 
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>
+                <Bold>Tessera:</Bold>
+                <LineBreak></LineBreak>
+                Tesseras are unblocked rows of 4 pieces that almost always mean victory is assured. 
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>
+                <Bold>Tria:</Bold>
+                <LineBreak></LineBreak>
+                Trias are unblocked rows of 3 pieces that can quickly 
+                become Tesseras and should be dealth.
+            </TextBlock>
+        </Label>
+        <Label Content="Tessera" Foreground="LightGreen" FontSize="45" HorizontalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="5"/>
+        <Label Content="Capture" Foreground="LightGreen" FontSize="45" HorizontalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="1" Grid.RowSpan="2"/>
+        <Label Content="Tria" Foreground="LightGreen" FontSize="45" HorizontalAlignment="Center" VerticalContentAlignment="Center" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3"/>
     </Grid>
 </Window>

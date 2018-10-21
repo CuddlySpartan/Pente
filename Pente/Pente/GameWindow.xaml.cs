@@ -31,6 +31,7 @@ namespace Pente
         //Colors we use for various things
         Brush player1 = Brushes.White;
         Brush player2 = Brushes.Black;
+        Brush previousTimerColor = Brushes.Green;
         Brush EmptySpace = Brushes.Red;
         Brush gridLines = Brushes.Black;
 
@@ -164,10 +165,10 @@ namespace Pente
             Dispatcher.BeginInvoke(new Action(() =>
                 {
                     int labelValue;
-                    int.TryParse(timerLabel.Content.ToString(), out labelValue);
+                    int.TryParse(lblTimer.Content.ToString(), out labelValue);
                     if (labelValue != 0)
                     {
-                        timerLabel.Content = labelValue - 1;
+                        lblTimer.Content = labelValue - 1;
                     }
                     else
                     {
@@ -178,11 +179,17 @@ namespace Pente
                             TakeAITurn();
                             ChangeEllipseColor();
                         }
-                        timerLabel.Content = "20";
+                        lblTimer.Content = "20";
+                        previousTimerColor = lblTimer.Foreground;
+                        lblTimer.Foreground = previousTimerColor;
                     }
-                    if(labelValue <= 3)
+                    if(!(bool)cbxMute.IsChecked)
                     {
-                        Console.Beep();
+                        if(labelValue <= 3)
+                        {
+                            lblTimer.Foreground = Brushes.Red;
+                            Console.Beep();
+                        }
                     }
 
                 }));
@@ -231,7 +238,7 @@ namespace Pente
                         player1FirstTurn = false;
                         player1SecondTurn = true;
                         ChangeEllipseColor();
-                        timerLabel.Content = "20";
+                        lblTimer.Content = "20";
                         if (WithAI)
                         {
                             TakeAITurn();
@@ -265,7 +272,7 @@ namespace Pente
                     ellipse.Opacity = 100;
                     pL.TurnOver();
                     HookUpBoards();
-                    timerLabel.Content = "20";
+                    lblTimer.Content = "20";
                     if (WithAI)
                     {
                         TakeAITurn();
@@ -309,7 +316,7 @@ namespace Pente
                             TakeAITurn();
                         }
                     }
-                    timerLabel.Content = "20";
+                    lblTimer.Content = "20";
                     HookUpBoards();
                     int[] pieceLocation = FindPiece(ellipse);
                     //Checks for captures and handles them
@@ -345,17 +352,35 @@ namespace Pente
                     //Both scenarios will open the Game Over Window
                     if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
                     {
-                        if (pL.isPlayer1Turn)
+                        if (!WithAI)
                         {
-                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
-                            gameOverWindow.Show();
-                            Close();
+                            if (pL.isPlayer1Turn)
+                            {
+                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
+                                gameOverWindow.Show();
+                                Close();
+                            }
+                            else
+                            {
+                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
+                                gameOverWindow.Show();
+                                Close();
+                            }
                         }
                         else
                         {
-                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
-                            gameOverWindow.Show();
-                            Close();
+                            if (!pL.isPlayer1Turn)
+                            {
+                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
+                                gameOverWindow.Show();
+                                Close();
+                            }
+                            else
+                            {
+                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
+                                gameOverWindow.Show();
+                                Close();
+                            }
                         }
                     }
                     //Handles tournament rule
@@ -517,6 +542,29 @@ namespace Pente
 
         }
         #endregion
+
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow main = new MainWindow();
+            main.Show();
+            Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            GameWindow newGame = new GameWindow(GameGrid.Rows, WithAI);
+            newGame.Width = Width;
+            newGame.Height = Height;
+            newGame.Show();
+            Close();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Instructions instructions = new Instructions();
+            instructions.Show();
+        }
     }
 }

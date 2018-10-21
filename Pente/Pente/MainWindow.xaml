@@ -6,25 +6,33 @@
         xmlns:local="clr-namespace:Pente"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid Background="Aquamarine">
+    <Grid Background="#FF005A5A">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="211*"/>
             <ColumnDefinition Width="340*"/>
             <ColumnDefinition Width="242*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="90*"/>
-            <RowDefinition Height="62*"/>
-            <RowDefinition Height="62*"/>
-            <RowDefinition Height="62*"/>
-            <RowDefinition Height="62*"/>
-            <RowDefinition Height="90*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="111*"/>
+            <RowDefinition Height="42*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="43*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="14*"/>
         </Grid.RowDefinitions>
-        <Button Name="btnSinglePlayer" Content="Single Player" Grid.Column="1" Grid.Row="1" Click="btnSinglePlayer_Click"/>
-        <Button Name="btnMultiPlayer" Content="More Players" Grid.Row="2" Grid.Column="1" Click="btnMultiPlayer_Click"/>
-        <Button Name="btnHelp" Content="Help Me Please" Grid.Row="3" Grid.Column="1" Click="btnHelp_Click"/>
-        <Button Name="btnExit" Content="Go Away" Grid.Row="4" Grid.Column="1" Click="btnExit_Click"/>
-        <ComboBox Name="cmbxGridSize" Grid.Column="1" HorizontalAlignment="Left" Margin="100.8,29.8,0,0" Grid.Row="5" VerticalAlignment="Top" Width="120"/>
+        <Label Grid.Row="0" Content="Pente" FontSize="90" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="#FF00AB5D" Grid.RowSpan="3" Grid.Column="1"/>
+        <Button Name="btnSinglePlayer" Content="Singleplayer" Grid.Row="4" Click="btnSinglePlayer_Click" Background="#FF06B7B7" Foreground="#FF66016C" FontSize="30" Grid.Column="1"/>
+        <ComboBox Name="cmbxGridSize" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="140" Height="40" FontSize="30" Background="White" Foreground="Black"/>
+        <Button x:Name="btnMultiPlayer" Content="Multiplayer" Grid.Row="6" Click="btnMultiPlayer_Click" Background="#FF06B7B7" Foreground="#FF66016C" FontSize="30" Grid.Column="1"/>
+        <Button x:Name="btnHelp" Content="Help" Grid.Row="8" Click="btnHelp_Click" Background="#FF06B7B7" Foreground="#FF66016C" FontSize="30" Grid.Column="1"/>
+        <Button x:Name="btnExit" Content="Exit" Grid.Row="10" Grid.RowSpan="11" Click="btnExit_Click" Background="#FF06B7B7" Foreground="#FF66016C" FontSize="30" Grid.Column="1" />
 
     </Grid>
 </Window>
