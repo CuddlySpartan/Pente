@@ -34,6 +34,7 @@ namespace Pente
         Brush previousTimerColor = Brushes.Green;
         Brush EmptySpace = Brushes.Red;
         Brush gridLines = Brushes.Black;
+        bool isBlackFirst = false;
 
         public bool WithAI { get; set; }
 
@@ -169,23 +170,22 @@ namespace Pente
                     if (labelValue != 0)
                     {
                         lblTimer.Content = labelValue - 1;
+                        lblTimer.Foreground = previousTimerColor;
                     }
                     else
                     {
-                        ChangeEllipseColor();
                         pL.TurnOver();
+                        ChangeEllipseColor();
                         if (WithAI)
                         {
                             TakeAITurn();
                             ChangeEllipseColor();
                         }
                         lblTimer.Content = "20";
-                        previousTimerColor = lblTimer.Foreground;
-                        lblTimer.Foreground = previousTimerColor;
                     }
-                    if(!(bool)cbxMute.IsChecked)
+                    if (!(bool)cbxMute.IsChecked)
                     {
-                        if(labelValue <= 3)
+                        if (labelValue <= 5)
                         {
                             lblTimer.Foreground = Brushes.Red;
                             Console.Beep();
@@ -230,7 +230,16 @@ namespace Pente
                     if (pieceLocation[0] == pL.Board.GetLength(0) / 2 && pieceLocation[1] == pL.Board.GetLength(1) / 2)
                     {
                         //Changes color of piece
-                        ellipse.Fill = player1;
+                        if (pL.isPlayer2Turn)
+                        {
+                            ellipse.Fill = player2;
+                            isBlackFirst = true;
+                        }
+                        else
+                        {
+                            ellipse.Fill = player1;
+                            isBlackFirst = false;
+                        }
                         ellipse.Opacity = 100;
                         pL.TurnOver();
                         HookUpBoards();
@@ -268,7 +277,14 @@ namespace Pente
                 {
                     //Makes the piece the same color as the player who
                     //placed the piece
-                    ellipse.Fill = player1;
+                    if (pL.isPlayer2Turn)
+                    {
+                        ellipse.Fill = player2;
+                    }
+                    else
+                    {
+                        ellipse.Fill = player1;
+                    }
                     ellipse.Opacity = 100;
                     pL.TurnOver();
                     HookUpBoards();
@@ -286,13 +302,14 @@ namespace Pente
         //Valid and invalid moves are handled
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
-
+            lblTria.Visibility = Visibility.Hidden;
+            lblTria.Content = "";
             //This check is for tournament rules
             if (player1FirstTurn)
             {
                 PlayersFirstTurn((Ellipse)sender);
             }
-            else if (!player1SecondTurn || pL.isPlayer1Turn)
+            else if ((isBlackFirst && !pL.isPlayer2Turn) || (!isBlackFirst && pL.isPlayer2Turn) || (!player1FirstTurn && !player1SecondTurn))
             {
                 Ellipse ellipse = (Ellipse)sender;
                 //The opacity of the piece is what we are checking 
@@ -300,7 +317,7 @@ namespace Pente
                 if (ellipse.Opacity == 0)
                 {
                     //Changes the piece placed to match the player's color
-                    if (pL.isPlayer1Turn)
+                    if (pL.isPlayer2Turn)
                     {
                         ellipse.Fill = player2;
                         ellipse.Opacity = 100;
@@ -330,9 +347,23 @@ namespace Pente
                             ellipse1.Fill = EmptySpace;
                         }
                     }
+                    HookUpBoards();
+                    string triaString;
+                    for (int i = 0; i < GameGrid.Rows; i++)
+                    {
+                        for (int j = 0; j < GameGrid.Columns; j++)
+                        {
+                            triaString = pL.Tria(j, i);
+                            if (!string.IsNullOrEmpty(triaString))
+                            {
+                                lblTria.Content = triaString;
+                                lblTria.Visibility = Visibility.Visible;
+                            }
+                        }
+                    }
                     if (pL.Tessera(pieceLocation[0], pieceLocation[1]))
                     {
-                        if (pL.isPlayer1Turn)
+                        if (pL.isPlayer2Turn)
                         {
                             lblTessera.Content = "Player 1 Tessera";
                             lblTessera.Visibility = Visibility.Visible;
@@ -354,7 +385,7 @@ namespace Pente
                     {
                         if (!WithAI)
                         {
-                            if (pL.isPlayer1Turn)
+                            if (pL.isPlayer2Turn)
                             {
                                 GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
                                 gameOverWindow.Show();
@@ -369,7 +400,7 @@ namespace Pente
                         }
                         else
                         {
-                            if (!pL.isPlayer1Turn)
+                            if (!pL.isPlayer2Turn)
                             {
                                 GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
                                 gameOverWindow.Show();
@@ -384,7 +415,7 @@ namespace Pente
                         }
                     }
                     //Handles tournament rule
-                    if (player1FirstTurn && !pL.isPlayer1Turn)
+                    if (player1FirstTurn && !pL.isPlayer2Turn)
                     {
                         player1FirstTurn = false;
                         player1SecondTurn = true;
@@ -427,7 +458,7 @@ namespace Pente
         private void ChangeEllipseColor()
         {
             //Changes the color of the turn indicator
-            if (pL.isPlayer1Turn)
+            if (pL.isPlayer2Turn)
             {
                 turnIndicator.Fill = player2;
             }

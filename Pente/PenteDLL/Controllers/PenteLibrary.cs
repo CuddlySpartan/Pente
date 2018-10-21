@@ -11,7 +11,7 @@ namespace PenteDLL.Controllers
     {
         //Whose turn it is
         //This determines what color the piece is
-        public bool isPlayer1Turn = false;
+        public bool isPlayer2Turn = false;
 
         //The board
         public PlayerPiece[,] Board { get; set; }
@@ -21,7 +21,7 @@ namespace PenteDLL.Controllers
         public int player1Captures = 0;
         public int player2Captures = 0;
 
-        
+
         public enum PlayerPiece
         {
             //Enum for determining which player owns which piece
@@ -34,10 +34,10 @@ namespace PenteDLL.Controllers
         {
             //Initializes the board
             Board = new PlayerPiece[size, size];
-            
+
         }
 
-        
+
 
         //Detects Tessera
         public bool Tessera(int column, int row)
@@ -197,20 +197,204 @@ namespace PenteDLL.Controllers
 
         #region Tria Checking
 
-        public bool Tria(int i, int j)
+        public string Tria(int i, int j)
         {
             //Detects Tria
-            return false;
+            PlayerPiece piece;
+            piece = CheckTriaUp(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaDown(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaLeft(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaRight(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaUpLeft(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaUpRight(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaDownLeft(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+            piece = CheckTriaDownRight(j, i);
+            if (piece == PlayerPiece.PLAYER1)
+            {
+                return "Player 1 has a Tria";
+            }
+            else if (piece == PlayerPiece.PLAYER2)
+            {
+                return "Player 2 has a Tria";
+            }
+
+            return "";
         }
 
-        public int CheckTriaUp(int row, int column, int a)
+        public PlayerPiece CheckTriaUp(int row, int column)
         {
-            if ((row - 1) >= 0 && (Board[row, column] == Board[row - 1, column] || Board[row - 1, column] == PlayerPiece.EMPTY))
+            if ((row - 5) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] == Board[row - 1, column]
+                && Board[row - 3, column] == PlayerPiece.EMPTY && Board[row - 4, column] == Board[row - 1, column] && Board[row - 5, column] == PlayerPiece.EMPTY)
             {
-
-                a = CheckTriaUp(row - 1, column, a + 1);
+                return Board[row - 1, column];
             }
-            return a;
+            if ((row - 4) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] == Board[row - 1, column]
+                && Board[row - 3, column] == Board[row - 1, column] && Board[row - 4, column] == PlayerPiece.EMPTY)
+            {
+                return Board[row - 1, column];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaDown(int row, int column)
+        {
+            if ((row + 5) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column] != PlayerPiece.EMPTY && Board[row + 2, column] == Board[row + 1, column]
+                && Board[row + 3, column] == PlayerPiece.EMPTY && Board[row + 4, column] == Board[row + 1, column] && Board[row + 5, column] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column];
+            }
+            if ((row + 4) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column] != PlayerPiece.EMPTY && Board[row + 2, column] == Board[row + 1, column]
+                && Board[row + 3, column] == Board[row + 1, column] && Board[row + 4, column] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaLeft(int row, int column)
+        {
+            if ((column - 5) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row, column - 1] != PlayerPiece.EMPTY && Board[row, column - 2] == Board[row, column - 1]
+                && Board[row, column - 3] == PlayerPiece.EMPTY && Board[row, column - 4] == Board[row, column - 1] && Board[row, column - 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row, column - 1];
+            }
+            if ((column - 4) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row, column - 1] != PlayerPiece.EMPTY && Board[row, column - 2] == Board[row, column - 1]
+                && Board[row, column - 3] == Board[row, column - 1] && Board[row, column - 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row, column - 1];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaRight(int row, int column)
+        {
+            if ((column + 5) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row, column + 1] != PlayerPiece.EMPTY && Board[row, column + 2] == Board[row, column + 1]
+                && Board[row, column + 3] == PlayerPiece.EMPTY && Board[row, column + 4] == Board[row, column + 1] && Board[row, column + 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row, column + 1];
+            }
+            if ((column + 4) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row, column + 1] != PlayerPiece.EMPTY && Board[row, column + 2] == Board[row, column + 1]
+                && Board[row, column + 3] == Board[row, column + 1] && Board[row, column + 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row, column + 1];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaUpLeft(int row, int column)
+        {
+            if ((column - 5) >= 0 && (row - 5) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column - 1] != PlayerPiece.EMPTY && Board[row - 2, column - 2] == Board[row - 1, column - 1]
+                && Board[row - 3, column - 3] == PlayerPiece.EMPTY && Board[row - 4, column - 4] == Board[row - 1, column - 1] && Board[row - 5, column - 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row - 1, column - 1];
+            }
+            if ((column - 4) >= 0 && (row - 4) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column - 1] != PlayerPiece.EMPTY && Board[row - 2, column - 2] == Board[row - 1, column - 1]
+                && Board[row - 3, column - 3] == Board[row - 1, column - 1] && Board[row - 4, column - 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row - 1, column - 1];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaDownLeft(int row, int column)
+        {
+            if ((column - 5) >= 0 && (row + 5) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column - 1] != PlayerPiece.EMPTY && Board[row + 2, column - 2] == Board[row + 1, column - 1]
+                && Board[row + 3, column - 3] == PlayerPiece.EMPTY && Board[row + 4, column - 4] == Board[row + 1, column - 1] && Board[row + 5, column - 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column - 1];
+            }
+            if ((column - 4) >= 0 && (row + 4) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column - 1] != PlayerPiece.EMPTY && Board[row + 2, column - 2] == Board[row + 1, column - 1]
+                && Board[row + 3, column - 3] == Board[row + 1, column - 1] && Board[row + 4, column - 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column - 1];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaUpRight(int row, int column)
+        {
+            if ((column + 5) < Board.GetLength(0) && (row - 5) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column + 1] != PlayerPiece.EMPTY && Board[row - 2, column + 2] == Board[row - 1, column + 1]
+                && Board[row - 3, column + 3] == PlayerPiece.EMPTY && Board[row - 4, column + 4] == Board[row - 1, column + 1] && Board[row - 5, column + 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row - 1, column + 1];
+            }
+            if ((column + 4) < Board.GetLength(0) && (row - 4) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column + 1] != PlayerPiece.EMPTY && Board[row - 2, column + 2] == Board[row - 1, column + 1]
+                && Board[row - 3, column + 3] == Board[row - 1, column + 1] && Board[row - 4, column + 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row - 1, column + 1];
+            }
+            return PlayerPiece.EMPTY;
+        }
+
+        public PlayerPiece CheckTriaDownRight(int row, int column)
+        {
+            if ((column + 5) < Board.GetLength(0) && (row + 5) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column + 1] != PlayerPiece.EMPTY && Board[row + 2, column + 2] == Board[row + 1, column + 1]
+                && Board[row + 3, column + 3] == PlayerPiece.EMPTY && Board[row + 4, column + 4] == Board[row + 1, column + 1] && Board[row + 5, column + 5] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column + 1];
+            }
+            if ((column + 4) < Board.GetLength(0) && (row + 4) < Board.GetLength(0) && Board[row, column] == PlayerPiece.EMPTY && Board[row + 1, column + 1] != PlayerPiece.EMPTY && Board[row + 2, column + 2] == Board[row + 1, column + 1]
+                && Board[row + 3, column + 3] == Board[row + 1, column + 1] && Board[row + 4, column + 4] == PlayerPiece.EMPTY)
+            {
+                return Board[row + 1, column + 1];
+            }
+            return PlayerPiece.EMPTY;
         }
 
         #endregion
@@ -218,7 +402,7 @@ namespace PenteDLL.Controllers
         public void TurnOver()
         {
             //Toggles which turn it is
-            isPlayer1Turn = !isPlayer1Turn;
+            isPlayer2Turn = !isPlayer2Turn;
         }
 
         public int[] AITurn()
@@ -410,7 +594,7 @@ namespace PenteDLL.Controllers
             }
             for (int i = 0; i < spacesCaptured.Count; i = i + 4)
             {
-                if (isPlayer1Turn)
+                if (isPlayer2Turn)
                 {
                     player1Captures++;
                 }
