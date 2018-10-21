@@ -37,8 +37,6 @@ namespace PenteDLL.Controllers
 
         }
 
-
-
         //Detects Tessera
         public bool Tessera(int column, int row)
         {

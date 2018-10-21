@@ -181,17 +181,9 @@ namespace Pente
                             TakeAITurn();
                             ChangeEllipseColor();
                         }
+                        lblTimer.Foreground = previousTimerColor;
                         lblTimer.Content = "20";
                     }
-                    if (!(bool)cbxMute.IsChecked)
-                    {
-                        if (labelValue <= 5)
-                        {
-                            lblTimer.Foreground = Brushes.Red;
-                            Console.Beep();
-                        }
-                    }
-
                 }));
         }
 
