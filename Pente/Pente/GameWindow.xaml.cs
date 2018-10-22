@@ -35,6 +35,7 @@ namespace Pente
         Brush EmptySpace = Brushes.Red;
         Brush gridLines = Brushes.Black;
         bool isBlackFirst = false;
+        bool didSomeoneWin = false;
 
         public bool WithAI { get; set; }
 
@@ -113,11 +114,14 @@ namespace Pente
                     GameGrid.Children.Add(ellipse);
                 }
             }
+
+            //Sets up the timer
             timer.Interval = 1000;
             timer.Enabled = true;
             timer.Start();
             timer.Elapsed += new ElapsedEventHandler(UpdateTimer);
 
+            //Changes player 2's name to "CPU" if there is an AI
             if (WithAI)
             {
                 tbxPlayer2Name.Text = "CPU";
@@ -143,11 +147,11 @@ namespace Pente
             {
                 for (int j = 0; j < boardUpdater.GetLength(1); j++)
                 {
-                    if (boardUpdater[i, j].Fill.Equals(player2))
+                    if (boardUpdater[i, j].Fill.Equals(player2) && boardUpdater[i, j].Opacity == 100)
                     {
                         pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER2;
                     }
-                    else if (boardUpdater[i, j].Fill.Equals(player1))
+                    else if (boardUpdater[i, j].Fill.Equals(player1) && boardUpdater[i, j].Opacity == 100)
                     {
                         pL.Board[i, j] = PenteLibrary.PlayerPiece.PLAYER1;
                     }
@@ -169,6 +173,7 @@ namespace Pente
 
         private void UpdateTimer(object source, ElapsedEventArgs e)
         {
+            //Increments the timer
             Dispatcher.BeginInvoke(new Action(() =>
                 {
                     int labelValue;
@@ -195,7 +200,8 @@ namespace Pente
 
         private int[] FindPiece(object piece)
         {
-
+            //This method locates a piece in the controller
+            //based on their selection in the view
             int[] locations = new int[2];
 
             for (int i = 0; i < GameGrid.Rows; i++)
@@ -246,6 +252,7 @@ namespace Pente
                         player1SecondTurn = true;
                         ChangeEllipseColor();
                         lblTimer.Content = "20";
+                        //Takes the AI's turn if there is one
                         if (WithAI)
                         {
                             TakeAITurn();
@@ -287,6 +294,7 @@ namespace Pente
                     pL.TurnOver();
                     HookUpBoards();
                     lblTimer.Content = "20";
+                    //Takes the AI's turn if there is one
                     if (WithAI)
                     {
                         TakeAITurn();
@@ -300,8 +308,10 @@ namespace Pente
         //Valid and invalid moves are handled
         private void MouseLeftClick_Down(object sender, RoutedEventArgs e)
         {
+            //Hides the tria label until a tria is formed
             lblTria.Visibility = Visibility.Hidden;
             lblTria.Content = "";
+
             //This check is for tournament rules
             if (player1FirstTurn)
             {
@@ -342,6 +352,13 @@ namespace Pente
                         }
                     }
                     HookUpBoards();
+                    //Takes the AI's turn
+                    if (WithAI)
+                    {
+                        HookUpBoards();
+                        TakeAITurn();
+                    }
+                    //Checks the entire board for a tria
                     string triaString;
                     for (int i = 0; i < GameGrid.Rows; i++)
                     {
@@ -362,9 +379,10 @@ namespace Pente
                             }
                         }
                     }
+                    //Checks if the piece placed forms a tessera
                     if (pL.Tessera(pieceLocation[0], pieceLocation[1]))
                     {
-                        if (pL.isPlayer2Turn)
+                        if (!pL.isPlayer2Turn)
                         {
                             lblTessera.Content = $"{lblPlayer1Name.Content} Tessera";
                             lblTessera.Visibility = Visibility.Visible;
@@ -384,41 +402,20 @@ namespace Pente
                     //Both scenarios will open the Game Over Window
                     if (pL.FiveInARow(pieceLocation[0], pieceLocation[1]))
                     {
-                        if (!WithAI)
+                        if (!pL.isPlayer2Turn && !didSomeoneWin)
                         {
-                            if (pL.isPlayer2Turn)
-                            {
-                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
-                                gameOverWindow.Show();
-                                Close();
-                            }
-                            else
-                            {
-                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
-                                gameOverWindow.Show();
-                                Close();
-                            }
+                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
+                            gameOverWindow.Show();
+                            didSomeoneWin = true;
+                            Close();
                         }
-                        else
+                        else if (!didSomeoneWin)
                         {
-                            if (!pL.isPlayer2Turn)
-                            {
-                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
-                                gameOverWindow.Show();
-                                Close();
-                            }
-                            else
-                            {
-                                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
-                                gameOverWindow.Show();
-                                Close();
-                            }
+                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
+                            gameOverWindow.Show();
+                            didSomeoneWin = true;
+                            Close();
                         }
-                    }
-                    if (WithAI)
-                    {
-                        HookUpBoards();
-                        TakeAITurn();
                     }
                     //Handles tournament rule
                     if (player1FirstTurn && !pL.isPlayer2Turn)
@@ -430,43 +427,75 @@ namespace Pente
             }
             else
             {
+                //Enforces the second turn rules based
+                //on tournament rules
                 PlayersSecondTurn((Ellipse)sender);
             }
             //If either player has captured more
             //than 5 pieces, the game ends and that
             //player wins.
             //Both scenarios open the Game Over Window
-            if (pL.player1Captures >= 5)
+            if (pL.player1Captures >= 5 && !didSomeoneWin)
             {
                 GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
+                didSomeoneWin = true;
                 Close();
             }
-            else if (pL.player2Captures >= 5)
+            else if (pL.player2Captures >= 5 && !didSomeoneWin)
             {
                 GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
+                didSomeoneWin = true;
                 Close();
             }
             //Toggles the turn indicator
             ChangeEllipseColor();
         }
 
+        //AI Turn Taking Process
         private void TakeAITurn()
         {
+            //Location of the AI's piece
             int[] aIPiece = pL.AITurn();
+
+            //Updating the board based on the AI's move
             Ellipse aIEllipse = (Ellipse)GameGrid.Children[aIPiece[0] + aIPiece[1] * GameGrid.Rows];
             aIEllipse.Fill = player2;
             aIEllipse.Opacity = 100;
-            pL.TurnOver();
             HookUpBoards();
-            if (pL.FiveInARow(aIPiece[0], aIPiece[1]))
+
+            //Checks for five-in-a-row wins for the AI
+            if (pL.FiveInARow(aIPiece[0], aIPiece[1]) && !didSomeoneWin)
             {
                 GameOverWindow gameOverWindow = new GameOverWindow("The AI Won", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
-
+                didSomeoneWin = true;
                 Close();
             }
+
+            //Checks for captures for the AI
+            List<int> captureLocation = pL.Capture(aIPiece[0], aIPiece[1]);
+            if (captureLocation.Count > 0)
+            {
+                for (int pieceCount = 0; pieceCount < captureLocation.Count; pieceCount = pieceCount + 2)
+                {
+                    Ellipse ellipse1 = (Ellipse)GameGrid.Children[(captureLocation[pieceCount + 1] + captureLocation[pieceCount] * GameGrid.Rows)];
+                    ellipse1.Opacity = 0;
+                    ellipse1.Fill = EmptySpace;
+                }
+            }
+
+            //Checks for tessera for the AI
+            if (pL.Tessera(aIPiece[0], aIPiece[1]))
+            {
+                lblTessera.Content = $"{lblPlayer2Name.Content} Tessera";
+                lblTessera.Visibility = Visibility.Visible;
+            }
+            HookUpBoards();
+
+            //Ends the turn
+            pL.TurnOver();
         }
 
         private void ChangeEllipseColor()
@@ -590,6 +619,9 @@ namespace Pente
 
         #endregion
 
+        #region Menu Buttons
+
+        //Opens the Main Menu
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             MainWindow main = new MainWindow();
@@ -597,6 +629,7 @@ namespace Pente
             Close();
         }
 
+        //Opens a new game identical to the current one
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             GameWindow newGame = new GameWindow(GameGrid.Rows, WithAI);
@@ -606,10 +639,13 @@ namespace Pente
             Close();
         }
 
+        //Opens the instruction window
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             Instructions instructions = new Instructions();
             instructions.Show();
         }
+
+        #endregion
     }
 }

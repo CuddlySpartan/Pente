@@ -36,6 +36,7 @@ namespace Pente
             cmbxGridSize.SelectedIndex = cmbxGridSize.Items.IndexOf("19 x 19");
         }
 
+        //Starts a game with 1 player and an AI
         private void btnSinglePlayer_Click(object sender, RoutedEventArgs e)
         {
             int selection;
@@ -46,6 +47,7 @@ namespace Pente
             this.Close();
         }
 
+        //Starts a game with 2 players
         private void btnMultiPlayer_Click(object sender, RoutedEventArgs e)
         {
             int selection;
@@ -56,12 +58,14 @@ namespace Pente
             this.Close();
         }
 
+        //Opens the instruction window
         private void btnHelp_Click(object sender, RoutedEventArgs e)
         {
             Instructions instructions = new Instructions();
             instructions.Show();
         }
 
+        //Closes the application
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             Close();

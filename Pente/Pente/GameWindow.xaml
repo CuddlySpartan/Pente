@@ -41,10 +41,8 @@
         <Button Content="Help" Background="#FF06B7B7" Foreground="#FF66016C" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Click="Button_Click_2"/>
         <Button Content="Restart" Background="#FF06B7B7" Foreground="#FF66016C" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" Click="Button_Click_1" />
         <Button Content="Menu" Background="#FF06B7B7" Foreground="#FF66016C" Grid.Column="1" Grid.Row="7" Grid.ColumnSpan="2" Click="Button_Click"/>
-        <Label Name="lblTria" Content="Tria"  Grid.Column="1" Grid.Row="3" Foreground="#FFFA3636" Visibility="Hidden"/>
-        <Label Name="lblTessera" Content="Tressa" Grid.Column="1" Grid.Row="4" Foreground="#FFFA3636" FontSize="20" Visibility="Hidden"/>
+        <Label Name="lblTria" Content="Tria"  Grid.Column="1" Grid.Row="3" Foreground="#FFFA3636" Grid.ColumnSpan="2" FontSize="20" Visibility="Hidden"/>
+        <Label Name="lblTessera" Content="Tressa" Grid.Column="1" Grid.Row="4" Foreground="#FFFA3636" FontSize="20" Grid.ColumnSpan="2" Visibility="Hidden"/>
         <Label Name="lblTimer" Foreground="#FF24987C" Content="20" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="24"/>
-        <CheckBox Name="cbxMute" Foreground="White" Grid.Column="2" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Label Content="Mute" Grid.Column="2" Grid.Row="3" FontSize="15" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

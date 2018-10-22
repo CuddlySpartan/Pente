@@ -64,6 +64,7 @@ namespace PenteDLL.Controllers
         }
 
         #region Tessera Checking
+        //Tessera detecting logic
         public int CheckTesseraUp(int row, int column, int a)
         {
             if ((row - 1) >= 0 && (Board[row, column] == Board[row - 1, column] || Board[row - 1, column] == PlayerPiece.EMPTY))
@@ -198,6 +199,11 @@ namespace PenteDLL.Controllers
         public string Tria(int i, int j)
         {
             //Detects Tria
+
+            //For the sake of convenience to the developers, 
+            //the entire board is checked for any trias
+            //A string is returned saying which player has the tria
+            //if there is one
             PlayerPiece piece;
             piece = CheckTriaUp(j, i);
             if (piece == PlayerPiece.PLAYER1)
@@ -275,6 +281,7 @@ namespace PenteDLL.Controllers
             return "";
         }
 
+        //Tria checking logic
         public PlayerPiece CheckTriaUp(int row, int column)
         {
             if ((row - 5) >= 0 && Board[row, column] == PlayerPiece.EMPTY && Board[row - 1, column] != PlayerPiece.EMPTY && Board[row - 2, column] == Board[row - 1, column]
@@ -405,6 +412,7 @@ namespace PenteDLL.Controllers
 
         public int[] AITurn()
         {
+            //AI selects a random space based on spaces available
             Random r = new Random();
 
             int row;
@@ -644,7 +652,7 @@ namespace PenteDLL.Controllers
             if ((column + 3) < Board.GetLength(0) && Board[row, column + 1] != Board[row, column]
                 && Board[row, column + 2] != Board[row, column] && Board[row, column + 3] == Board[row, column])
             {
-                if (Board[row, column + 1] != PlayerPiece.EMPTY && Board[row, column + 1] != PlayerPiece.EMPTY)
+                if (Board[row, column + 1] != PlayerPiece.EMPTY && Board[row, column + 2] != PlayerPiece.EMPTY)
                     return true;
             }
             return false;

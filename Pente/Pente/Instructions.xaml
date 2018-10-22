@@ -67,7 +67,7 @@
                 <LineBreak></LineBreak>
                 - Trias are unblocked rows of 3 pieces that can quickly 
                 <LineBreak></LineBreak>
-                 - become Tesseras and should be dealth.
+                 - become Tesseras and should be dealt with immediately.
             </TextBlock>
         </Label>
         <Label Content="Tessera" Foreground="LightGreen" FontSize="45" HorizontalAlignment="Center" VerticalContentAlignment="Center" Grid.Row="4" Margin="45,69,46,0.333" Grid.RowSpan="2" Width="153"/>
