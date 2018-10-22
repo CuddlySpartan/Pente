@@ -404,14 +404,14 @@ namespace Pente
                     {
                         if (!pL.isPlayer2Turn && !didSomeoneWin)
                         {
-                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
+                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} Wins 5 in a row!", WithAI, GameGrid.Rows);
                             gameOverWindow.Show();
                             didSomeoneWin = true;
                             Close();
                         }
                         else if (!didSomeoneWin)
                         {
-                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
+                            GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} Wins 5 in a row!", WithAI, GameGrid.Rows);
                             gameOverWindow.Show();
                             didSomeoneWin = true;
                             Close();
@@ -437,14 +437,14 @@ namespace Pente
             //Both scenarios open the Game Over Window
             if (pL.player1Captures >= 5 && !didSomeoneWin)
             {
-                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} wins!", WithAI, GameGrid.Rows);
+                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer1Name.Text} Wins w/ 5 captures!", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
                 didSomeoneWin = true;
                 Close();
             }
             else if (pL.player2Captures >= 5 && !didSomeoneWin)
             {
-                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} wins!", WithAI, GameGrid.Rows);
+                GameOverWindow gameOverWindow = new GameOverWindow($"{tbxPlayer2Name.Text} Wins w/ 5 captures!", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
                 didSomeoneWin = true;
                 Close();
@@ -468,7 +468,7 @@ namespace Pente
             //Checks for five-in-a-row wins for the AI
             if (pL.FiveInARow(aIPiece[0], aIPiece[1]) && !didSomeoneWin)
             {
-                GameOverWindow gameOverWindow = new GameOverWindow("The AI Won", WithAI, GameGrid.Rows);
+                GameOverWindow gameOverWindow = new GameOverWindow("The AI Won 5 in a row", WithAI, GameGrid.Rows);
                 gameOverWindow.Show();
                 didSomeoneWin = true;
                 Close();
