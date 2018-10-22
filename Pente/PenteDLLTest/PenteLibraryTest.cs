@@ -115,12 +115,12 @@ namespace PenteDLLTest
         public void BlackTriaTestVerticlePass()
         {//this way -> |
             pente.Board = new PenteLibrary.PlayerPiece[19, 19];
-            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER1;
-            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
-            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER1;
+            pente.Board[4, 1] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(3, 0);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(1, 5);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestVerticleFail()
@@ -130,8 +130,8 @@ namespace PenteDLLTest
             pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[3, 4] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(3, 4);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestHorizontalPass()
@@ -141,8 +141,8 @@ namespace PenteDLLTest
             pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(0, 3);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 0);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestHorizontalFail()
@@ -152,8 +152,8 @@ namespace PenteDLLTest
             pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(0, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(1, 5);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestDiagonalPositivePass()
@@ -163,8 +163,8 @@ namespace PenteDLLTest
             pente.Board[3, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[2, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(4, 1);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 1);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestDiagonalPositiveFail()
@@ -174,8 +174,8 @@ namespace PenteDLLTest
             pente.Board[3, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[2, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(2, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 1);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestDiagonalNegativePass()
@@ -185,8 +185,8 @@ namespace PenteDLLTest
             pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(3, 3);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 1 has a Tria");
         }
         [TestMethod]
         public void BlackTriaTestDiagonalNegativeFail()
@@ -196,8 +196,8 @@ namespace PenteDLLTest
             pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER1;
             pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER1;
 
-            bool isTria = pente.Tria(3, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 1 has a Tria");
         }
         #endregion
         #region white_tessera_tests
@@ -303,12 +303,12 @@ namespace PenteDLLTest
         public void WhiteTriaTestVerticlePass()
         {//this way -> |
             pente.Board = new PenteLibrary.PlayerPiece[19, 19];
-            pente.Board[1, 0] = PenteLibrary.PlayerPiece.PLAYER2;
-            pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
-            pente.Board[3, 0] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[2, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[3, 1] = PenteLibrary.PlayerPiece.PLAYER2;
+            pente.Board[4, 1] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(3, 0);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(1, 5);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestVerticleFail()
@@ -318,8 +318,8 @@ namespace PenteDLLTest
             pente.Board[2, 0] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[3, 4] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(3, 4);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestHorizontalPass()
@@ -329,8 +329,8 @@ namespace PenteDLLTest
             pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(0, 3);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 0);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestHorizontalFail()
@@ -340,8 +340,8 @@ namespace PenteDLLTest
             pente.Board[0, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[0, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(0, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(1, 5);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestDiagonalPositivePass()
@@ -351,8 +351,8 @@ namespace PenteDLLTest
             pente.Board[3, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[2, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(2, 3);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 1);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestDiagonalPositiveFail()
@@ -362,8 +362,8 @@ namespace PenteDLLTest
             pente.Board[3, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[2, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(2, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 1);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestDiagonalNegativePass()
@@ -373,8 +373,8 @@ namespace PenteDLLTest
             pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(3, 3);
-            Assert.IsTrue(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsTrue(isTria == "Player 2 has a Tria");
         }
         [TestMethod]
         public void WhiteTriaTestDiagonalNegativeFail()
@@ -384,8 +384,8 @@ namespace PenteDLLTest
             pente.Board[2, 2] = PenteLibrary.PlayerPiece.PLAYER2;
             pente.Board[3, 3] = PenteLibrary.PlayerPiece.PLAYER2;
 
-            bool isTria = pente.Tria(3, 3);
-            Assert.IsFalse(isTria);
+            var isTria = pente.Tria(4, 4);//checks have to be from the empty space....
+            Assert.IsFalse(isTria == "Player 2 has a Tria");
         }
         #endregion
 
