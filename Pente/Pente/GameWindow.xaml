@@ -23,8 +23,8 @@
             <ColumnDefinition Width="103*"/>
             <ColumnDefinition Width="41*"/>
         </Grid.ColumnDefinitions>
-        <Image Source="images/edit.png" MouseLeftButtonUp="Player1NameEdit_Click" Grid.Column="2" Grid.Row="0"/>
-        <Image Source="images/edit.png" MouseLeftButtonUp="Player2NameEdit_Click" Grid.Column="2" Grid.Row="1"/>
+        <Image Name="imgPlayer1Button" Source="images/edit.png" MouseLeftButtonUp="Player1NameEdit_Click" Grid.Column="2" Grid.Row="0"/>
+        <Image Name="imgPlayer2Button" Source="images/edit.png" MouseLeftButtonUp="Player2NameEdit_Click" Grid.Column="2" Grid.Row="1"/>
         <Label Name="lblPlayer1Name" Content="{Binding ElementName=tbxPlayer1Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="0" FontSize="20" HorizontalAlignment="Center" Foreground="White"/>
         <Label Name="lblPlayer2Name" Content="{Binding ElementName=tbxPlayer2Name, Path=Text}" Grid.Column="1" Panel.ZIndex="-1" Grid.Row="1" FontSize="20" HorizontalAlignment="Center" Foreground="White" Grid.RowSpan="2"/>
         <TextBox Name="tbxPlayer1Name" Text="Player1" Background="Transparent" LostFocus="Player1Name_LostFocus" KeyDown="Player1Name_KeyDown" Visibility="Hidden" Grid.Row="0" Grid.Column="1" Foreground="White" FontSize="20" Grid.ColumnSpan="2" Grid.RowSpan="1" />

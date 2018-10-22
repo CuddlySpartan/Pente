@@ -117,6 +117,12 @@ namespace Pente
             timer.Enabled = true;
             timer.Start();
             timer.Elapsed += new ElapsedEventHandler(UpdateTimer);
+
+            if (WithAI)
+            {
+                tbxPlayer2Name.Text = "CPU";
+                imgPlayer2Button.Visibility = Visibility.Hidden;
+            }
         }
 
         /*Hooks up both boards in the view and controller*/
@@ -320,10 +326,6 @@ namespace Pente
                         ellipse.Fill = player1;
                         ellipse.Opacity = 100;
                         pL.TurnOver();
-                        if (WithAI)
-                        {
-                            TakeAITurn();
-                        }
                     }
                     lblTimer.Content = "20";
                     HookUpBoards();
@@ -348,7 +350,14 @@ namespace Pente
                             triaString = pL.Tria(j, i);
                             if (!string.IsNullOrEmpty(triaString))
                             {
-                                lblTria.Content = triaString;
+                                if (triaString == "Player1")
+                                {
+                                    lblTria.Content = $"{lblPlayer1Name.Content} has a Tria";
+                                }
+                                else if (triaString == "Player2")
+                                {
+                                    lblTria.Content = $"{lblPlayer2Name.Content} has a Tria";
+                                }
                                 lblTria.Visibility = Visibility.Visible;
                             }
                         }
@@ -357,12 +366,12 @@ namespace Pente
                     {
                         if (pL.isPlayer2Turn)
                         {
-                            lblTessera.Content = "Player 1 Tessera";
+                            lblTessera.Content = $"{lblPlayer1Name.Content} Tessera";
                             lblTessera.Visibility = Visibility.Visible;
                         }
                         else
                         {
-                            lblTessera.Content = "Player 2 Tessera";
+                            lblTessera.Content = $"{lblPlayer2Name.Content} Tessera";
                             lblTessera.Visibility = Visibility.Visible;
                         }
                     }
@@ -406,6 +415,11 @@ namespace Pente
                             }
                         }
                     }
+                    if (WithAI)
+                    {
+                        HookUpBoards();
+                        TakeAITurn();
+                    }
                     //Handles tournament rule
                     if (player1FirstTurn && !pL.isPlayer2Turn)
                     {
@@ -440,11 +454,19 @@ namespace Pente
 
         private void TakeAITurn()
         {
-            int[] AIPiece = pL.AITurn();
-            Ellipse aIEllipse = (Ellipse)GameGrid.Children[AIPiece[0] + AIPiece[1] * GameGrid.Rows];
+            int[] aIPiece = pL.AITurn();
+            Ellipse aIEllipse = (Ellipse)GameGrid.Children[aIPiece[0] + aIPiece[1] * GameGrid.Rows];
             aIEllipse.Fill = player2;
             aIEllipse.Opacity = 100;
             pL.TurnOver();
+            HookUpBoards();
+            if (pL.FiveInARow(aIPiece[0], aIPiece[1]))
+            {
+                GameOverWindow gameOverWindow = new GameOverWindow("The AI Won", WithAI, GameGrid.Rows);
+                gameOverWindow.Show();
+
+                Close();
+            }
         }
 
         private void ChangeEllipseColor()

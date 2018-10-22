@@ -202,74 +202,74 @@ namespace PenteDLL.Controllers
             piece = CheckTriaUp(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaDown(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaLeft(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaRight(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaUpLeft(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaUpRight(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaDownLeft(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
             piece = CheckTriaDownRight(j, i);
             if (piece == PlayerPiece.PLAYER1)
             {
-                return "Player 1 has a Tria";
+                return "Player1";
             }
             else if (piece == PlayerPiece.PLAYER2)
             {
-                return "Player 2 has a Tria";
+                return "Player2";
             }
 
             return "";
@@ -415,7 +415,7 @@ namespace PenteDLL.Controllers
                 column = r.Next(Board.GetLength(0));
                 if (Board[row, column] == PlayerPiece.EMPTY)
                 {
-                    return new int[] { row, column };
+                    return new int[] { column, row };
                 }
             }
         }
